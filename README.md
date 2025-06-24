@@ -1,64 +1,43 @@
 
-# Development Board Template
-
-A generic and modular development board based on the [Microcontroller Name], designed for rapid prototyping, embedded systems education, IoT experimentation, and wearable devices. This board combines flexible power options, modern connectivity, and accessible interfaces to accelerate your hardware development.
+# ICP-10111 Barometric Pressure Sensor Module
 
 <div align="center">
-  <img src="hardware/resources/board_image.png" width="450px" alt="Development Board">
-  <p><em>[Replace with board name or logo]</em></p>
+  <img src="hardware/resources/unit_top_v_1_0_0_icp10111_barometric_pressure_sensor.png" width="450px" alt="Development Board">
+  <p><em></em></p>
 </div>
+
+The **UNIT ICP-10111 Barometric Pressure Sensor Module** is a compact and efficient sensor designed for measuring atmospheric pressure. It utilizes the ICP10111 sensor from Infineon, which is known for its high accuracy and low power consumption. This module is ideal for applications in weather monitoring, altitude measurement, and environmental sensing.
+
 
 ## 📦 Overview
 
-| Feature                 | Description                                                   |
-|------------------------|---------------------------------------------------------------|
-| **Microcontroller**     | [ESP32-S3, RP2040, STM32, etc.]                               |
-| **Connectivity**        | [Wi-Fi, Bluetooth LE, USB, etc.]                              |
-| **I/O Voltage**         | [3.3V / 5V compatible]                                        |
-| **Power Options**       | [USB-C, LiPo Battery, External Vin]                           |
-| **Programming**         | [Arduino IDE, PlatformIO, ESP-IDF, MicroPython, etc.]         |
-| **Expansion**           | [QWIIC, Grove, Header Pins, etc.]                             |
+<div align="center">
 
+| Feature                                  | Specification                                                     |
+|------------------------------------------|-------------------------------------------------------------------|
+| Pressure operating range                 | 30 to 110 kPa                                                     |
+| Noise and current consumption            | ULN mode: 0.4 Pa @ 10.4 µA<br>LN mode: 0.8 Pa @ 5.2 µA<br>LP mode: 3.2 Pa @ 1.3 µA |
+| Pressure Sensor Relative Accuracy        | ±1 Pa for any 10 hPa change over 950 hPa–1050 hPa at 25°C           |
+| Pressure Sensor Absolute Accuracy        | ±1 hPa over 950 hPa–1050 hPa, 0°C to 65°C                           |
+| Pressure Sensor Temperature Coefficient Offset | ±0.5 Pa/°C over 25°C to 45°C at 100 kPa                           |
+| Temperature Sensor Absolute Accuracy     | ±0.4°C                                                           |
+| Temperature operating range              | -40 °C to 85 °C                                                   |
+| Host Interface                           | I2C at up to 400 kHz                                               |
+| Single Supply voltage                    | 1.8V ±5%                                                         |
+| RoHS and Green compliant                 | Yes                                                              |
 
-## ⚙️ Technical Specifications
+</div>
 
-- **Microcontroller:** [Insert name and variant]
-- **Core Architecture:** [Xtensa / ARM Cortex-M / RISC-V]
-- **Clock Speed:** [e.g., 240 MHz]
-- **Flash / RAM:** [e.g., 8 MB Flash, 2 MB PSRAM]
-- **Wireless:** [2.4 GHz Wi-Fi, BLE 5.0]
-- **Interfaces:**
-  - UART / I2C / SPI / PWM
-  - USB Device or Host (if supported)
-- **Power:**
-  - Input via USB-C: 5V
-  - Regulated Output: 3.3V
-  - Battery Support: [Yes / No]
-- **Dimensions:** [e.g., 55mm x 25mm]
-
-
-## 🔌 Pinout
-
-Include a diagram like `docs/pinout.png` or describe functionally:
-
-| Pin Label | Function        | Notes                             |
-|-----------|------------------|-----------------------------------|
-| D0–D13    | GPIO             | Digital I/O                       |
-| A0–A7     | ADC              | 12-bit resolution                 |
-| TX / RX   | UART             | Serial communication              |
-| SDA / SCL | I2C              | Compatible with QWIIC modules     |
-| MISO / MOSI / SCK / CS | SPI | Display or Flash expansion       |
-| VCC / GND | Power            | 3.3V logic and power distribution |
 
 ## 🧪 Use Cases
 
-- IoT Sensor Nodes
-- Wearable Devices
-- Environmental Monitoring
-- Educational Electronics
-- Automation Prototyping
-
-
+- Altitude Control of Drones and Flying Toys
+- Mobile Phones
+- Virtual Reality and Gaming Equipment
+- Indoor/Outdoor Navigation (dead-reckoning, floor/elevator/step detection)
+- Vertical velocity monitoring
+- Leisure, Sports, and Fitness Activity Identification
+- Weather Forecasting
 
 ## 🚀 Getting Started
 
@@ -67,7 +46,7 @@ Include a diagram like `docs/pinout.png` or describe functionally:
    - Arduino IDE
    - PlatformIO
    - ESP-IDF / Pico SDK
-3. **Flash** a sample project or use one from `/firmware/`
+3. **Flash** a sample project or use one from `/software/examples`
 4. **Power** via USB or external battery (if supported)
 
 
@@ -89,14 +68,6 @@ Please refer to [`LICENSE.md`](LICENSE.md) for full terms.
 
 
 <div align="center">
-  <sub>Template created by UNIT Electronics • Adapt this file to document your board!</sub>
+  <sub>Template created by UNIT Electronics </sub>
 </div>
 
-### ✅ What You Can Do with This Template:
-
-* Fork it for new development board projects.
-* Fill in specs, pinout, and MCU details.
-* Add images, schematics, and test code.
-
-
-Would you like a downloadable `.zip` of this full structure including placeholder images and files (`hardware/`, `docs/`, `firmware/`, etc.)?
