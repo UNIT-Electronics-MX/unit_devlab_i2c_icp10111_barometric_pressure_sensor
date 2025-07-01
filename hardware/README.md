@@ -24,7 +24,26 @@
 
 </div>
 
+## 📏 Dimensions
 
+<div align="center">
+<a href="./resources/unit_dimension_v_1_0_0_icp10111_barometric_pressure_sensor.png"><img src="./resources/unit_dimension_v_1_0_0_icp10111_barometric_pressure_sensor.png" width="500px"><br/> Dimensions</a>
+</div>
+
+## 📃 Topology
+
+<div align="center">
+<a href="./resources/unit_topology_v_1_0_0_icp10111_barometric_pressure_sensor.png"><img src="./resources/unit_topology_v_1_0_0_icp10111_barometric_pressure_sensor.png" width="500px"><br/> Topology</a>
+
+| Ref. | Description                              |
+|------|------------------------------------------|
+| IC1  | BME688 Environmental Sensor              |
+| L1   | Power On LED                             |
+| U1   | ME6206A18XG 1.8V Regulator               | 
+| JP1  | 2.54 mm Castellated Holes                |
+| J1   | QWIIC Connector (JST 1 mm pitch) for I2C |
+
+</div>
 
 # References
 
