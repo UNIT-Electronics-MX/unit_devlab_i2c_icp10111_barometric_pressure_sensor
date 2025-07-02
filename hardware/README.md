@@ -1,7 +1,7 @@
 # Hardware
 
 <div align="center">
-<a href="./unit_sch_V_0_0_1_ue0094_ICP-10111.pdf"><img src="resources/Schematics_icon.jpg?raw=false" width="500px"><br/> Schematics</a>
+<a href="./unit_sch_V_0_0_1_ue0094_ICP-10111.pdf"><img src="resources/Schematics_icon.jpg?raw=false" width="450px"><br/> Schematics</a>
 </div>
 
 ---
@@ -16,6 +16,10 @@
 ## 🔌 Pinout
 
 <div align="center">
+    <a href="#"><img src="hardware/resources/charger_pinout.jpg" width="500px"><br/>Pinout</a>
+    <br/>
+    <br/>
+    
 
 | Pin Label | Function    | Notes                             |
 |-----------|-------------|-----------------------------------|
@@ -33,7 +37,9 @@
 ## 📃 Topology
 
 <div align="center">
-<a href="./resources/unit_topology_v_1_0_0_icp10111_barometric_pressure_sensor.png"><img src="./resources/unit_topology_v_1_0_0_icp10111_barometric_pressure_sensor.png" width="500px"><br/> Topology</a>
+<a href="./resources/unit_topology_v_1_0_0_icp10111_barometric_pressure_sensor.png"><img src="./resources/unit_topology_v_1_0_0_icp10111_barometric_pressure_sensor.png" width="450px"><br/> Topology</a>
+<br/>
+<br/>
 
 | Ref. | Description                              |
 |------|------------------------------------------|
