@@ -12,7 +12,7 @@ This file serves as an input to generate a datasheet-style technical PDF.
 Fill in each section without deleting or modifying the existing headings.
 -->
 
-# Template Development Board
+# ICP-10111 Barometric Pressure Sensor
 
 ![product](./images/top.png) <!-- FILL HERE: replace image if needed -->
 
