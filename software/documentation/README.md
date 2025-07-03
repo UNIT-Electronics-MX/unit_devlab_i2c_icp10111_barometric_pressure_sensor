@@ -14,56 +14,34 @@ Fill in each section without deleting or modifying the existing headings.
 
 # ICP-10111 Barometric Pressure Sensor
 
-![product](./images/top.png) <!-- FILL HERE: replace image if needed -->
+![product](../../hardware/resources/unit_top_v_1_0_0_icp10111_barometric_pressure_sensor.png)
 
 ## Introduction
 
 <!-- FILL HERE -->
-The **ICP-10111 Barometric Pressure Sensor Module** is a compact and efficient sensor designed for high-accuracy atmospheric pressure measurements with low power consumption. Based on MEMS capacitive technology, this module offers ultra-low noise performance, exceptional relative accuracy, and stable sensor throughput. Ideal for weather monitoring, altitude measurement, and environmental sensing, it delivers industry-leading precision in demanding applications.
+The ICP-10111 Barometric Pressure Sensor Module is a compact and efficient sensor designed for high-accuracy atmospheric pressure measurements with low power consumption. Based on MEMS capacitive technology, this module offers ultra-low noise performance, exceptional relative accuracy, and stable sensor throughput. Ideal for weather monitoring, altitude measurement, and environmental sensing, it delivers industry-leading precision in demanding applications.
 
 ## Functional Description
 
-<!-- FILL HERE -->
-- **High Accuracy**  
-  - Differential: ±1 Pa (10 hPa span at 25 °C)  
-  - Absolute: ±1 hPa (950 hPa–1050 hPa over –40 °C to +85 °C)
-- **Ultra-Low Power Modes**  
-  - Ultra-Low Noise: 10 Hz sample, 10.4 µA  
-  - Low Noise: 10 Hz sample, 5.2 µA  
-  - Low Power: 10 Hz sample, 1.3 µA
-- **Wide Pressure Range**  
-  - 30 kPa to 110 kPa (300 mbar–1100 mbar)
-- **Built-In Temperature Sensor**  
-  - ±0.4 °C accuracy, used for real-time compensation
-- **I²C Interface**  
-  - Supports up to 400 kHz clock  
-  - Standard 7-bit address: 0x63 (GNDBIAS pin floating)
-- **Qwiic / STEMMA QT Connector**  
-  - Plug-and-play I²C connectivity, no soldering required
-- **Operating Voltage**  
-  - Module: 3.3 V–5.5 V  
-  - On-chip sensor core: 1.8 V
-- **Operating Temperature**  
-  - –40 °C to +85 °C
-- **Compact Footprint**  
-  - 20.32 × 17.78 mm PCB with four mounting holes
+The ICP-10111 is a high-precision barometric pressure sensor module based on capacitive MEMS technology.  
+- Measures absolute pressure over 30 kPa–110 kPa and integrates a temperature sensor for real-time thermal compensation.  
+- Delivers ±1 Pa differential accuracy (≈5 cm altitude resolution) and ±1 hPa absolute accuracy across –40 °C…+85 °C.  
+- Built-in 24-bit ΔΣ ADC and I²C interface allow direct digital readout without external amplification.  
+- Three programmable power/noise modes (Ultra-Low Noise, Low Noise, Low Power) optimize trade-off between current draw and resolution.  
+- Breakout board includes onboard 1.8 V regulator, level-shifting I/O and four mounting holes for easy integration.
 
 ## Electrical Characteristics & Signal Overview
 
-<!-- FILL HERE -->
-| Parameter                   | Value                                  |
-|-----------------------------|----------------------------------------|
-| Pressure Range              | 30 kPa – 110 kPa                       |
-| Differential Accuracy       | ±1 Pa (10 hPa span @ 25 °C)            |
-| Absolute Accuracy           | ±1 hPa (950–1050 hPa, –40 °C to +85 °C) |
-| Temperature Accuracy        | ±0.4 °C                                |
-| Pressure Noise (RMS)        | 0.4 Pa (ULN mode), 0.8 Pa (LN), 3.2 Pa (LP) |
-| Supply Current              | 1.3 µA – 10.4 µA (depends on mode)     |
-| I²C Speed                   | Up to 400 kHz                          |
-| I²C Address                 | 0x63 (default)                         |
-| Supply Voltage              | 3.3 V – 5.5 V                          |
-| Sensor Core Voltage         | 1.8 V internal                        |
-| Operating Temperature Range | –40 °C to +85 °C                       |
+- Supply Voltage: 3.3 V–5.5 V (module), 1.8 V (sensor core)  
+- Supply Current:  
+  - Ultra-Low Noise (10 Hz): 10.4 µA  
+  - Low Noise (10 Hz): 5.2 µA  
+  - Low Power (10 Hz): 1.3 µA  
+- Pressure Resolution: 24-bit ΔΣ ADC (sub-Pa level)  
+- Temperature Resolution: 0.01 °C (±0.4 °C accuracy)  
+- I²C Interface: up to 400 kHz, 7-bit address 0x63  
+- Logic Levels: VCC-referenced (1.8 V – 5.5 V tolerant)  
+- Measurement Rates: 1 Hz to 100 Hz selectable 
 
 
 ## Applications
@@ -87,20 +65,23 @@ The **ICP-10111 Barometric Pressure Sensor Module** is a compact and efficient s
 
 ## Features
 
-| Parameter                   | Value                                  |
-|-----------------------------|----------------------------------------|
-| Board Dimensions            | 20.32 mm × 17.78 mm                    |
-| Mounting Holes              | 4 × Ø 2.2 mm                           |
-
-  
+- Board Dimensions 20.32 mm × 17.78 mm
+- Mounting Holes 4 × Ø 2.2 mm
+- High-stability MEMS capacitive pressure sensor with low drift  
+- Integrated temperature sensor for on-board compensation  
+- Ultra-low-noise ΔΣ ADC with 24-bit resolution  
+- Three user-selectable power/noise modes for optimized current usage  
+- Qwiic/STEMMA QT connector for solder-free I²C daisy-chaining  
+- On-board level shifting and 1.8 V core regulator    
+- Wide operating range: –40 °C to +85 °C, 30 kPa to 110 kPa
 
 ## Pin & Connector Layout
-| Pin   | Type    | Voltage Level | Function                                                  |
-|-------|---------|---------------|-----------------------------------------------------------|
-| VCC   | Power   | 3.3 V – 5.5 V  | Provides power to the on-board regulator and sensor core. |
-| GND   | Ground  | 0 V           | Common reference for power and signals.                   |
-| SDA   | I²C Data| 1.8 V to VCC  | Serial data line for I²C communications.                  |
-| SCL   | I²C Clock| 1.8 V to VCC | Serial clock line for I²C communications.                 |
+| Pin   | Voltage Level | Function                                                  |
+|-------|---------------|-----------------------------------------------------------|
+| VCC   | 3.3 V – 5.5 V | Provides power to the on-board regulator and sensor core. |
+| GND   | 0 V           | Common reference for power and signals.                   |
+| SDA   | 1.8 V to VCC  | Serial data line for I²C communications.                  |
+| SCL   | 1.8 V to VCC  | Serial clock line for I²C communications.                 |
 
 > **Note:** The module also includes a Qwiic/STEMMA QT connector carrying the same four signals (VCC, GND, SDA, SCL) for effortless daisy-chaining.
 
@@ -108,35 +89,41 @@ The **ICP-10111 Barometric Pressure Sensor Module** is a compact and efficient s
 
 ### Interface Overview
 
-| Interface  | Signals / Pins         | Typical Use                              |
-|------------|------------------------|------------------------------------------|
-| UART       | <!-- FILL -->          | <!-- FILL -->                             |
-| I2C        | <!-- FILL -->          | <!-- FILL -->                             |
-| SPI        | <!-- FILL -->          | <!-- FILL -->                             |
-| USB        | <!-- FILL -->          | <!-- FILL -->                             |
+| Interface | Signals / Pins                               | Typical Use                                       |
+|-----------|----------------------------------------------|---------------------------------------------------|
+| UART      | —                                            | Not supported                                     |
+| I²C       | SDA, SCL, VCC, GND (via Qwiic/STEMMA QT™)    | Main digital interface for pressure & temperature |
+| SPI       | —                                            | Not supported                                     |
+| USB       | —                                            | Not supported                                     |
 
 ### Supports
 
-| Symbol | I/O         | Description                        |
-|--------|-------------|------------------------------------|
-| VCC    | Input       | <!-- FILL -->                      |
-| GND    | GND         | <!-- FILL -->                      |
-| IO     | Bidirectional | <!-- FILL -->                   |
+| Symbol | I/O Type      | Description                                |
+|--------|---------------|--------------------------------------------|
+| VCC    | Power Input   | 3.3 V–5.5 V supply for on-board regulator  |
+| GND    | Ground        | Common system ground                       |
+| SDA    | Bidirectional | I²C data line (7-bit address 0x63 default) |
+| SCL    | Bidirectional | I²C clock line                             |
 
 ## Block Diagram
 
-![Function Diagram](images/pinout.png) <!-- FILL HERE: replace image if needed -->
+![Function Diagram](../../hardware/resources/unit_pinout_v_0_0_1_ue0094_icp10111_barometric_pressure_sensor_en.png)
 
 ## Dimensions
 
-![Dimensions](images/dimension.png) <!-- FILL HERE: replace image if needed -->
-
+![Dimensions](../../hardware/resources/unit_dimension_v_1_0_0_icp10111_barometric_pressure_sensor.png)
 ## Usage
 
-<!-- FILL HERE -->
-Mention supported development platforms and toolchains 
-
-- (e.g., Arduino IDE, ESP-IDF, PlatformIO, etc.)
+- Arduino IDE  
+  - Install SparkFun_ICP10111 library via Library Manager  
+  - Include <Wire.h> and <SparkFun_ICP10111.h> in your sketch  
+- PlatformIO  
+  - Add sparkfun/sparkfun-icp10111@^1.0.0 to lib_deps in platformio.ini  
+- Raspberry Pi (Linux/C or Python)  
+  - Use the I²C-1 bus (/dev/i2c-1) with smbus2 (Python) or i2c-dev (C)  
+- CircuitPython / MicroPython  
+  - Install adafruit_icp10111 from the Adafruit bundle  
+  - Use busio.I2C or I2C() to communicate over SDA/SCL  
 
 ## Downloads
 
