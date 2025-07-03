@@ -1,7 +1,7 @@
 # Hardware
 
 <div align="center">
-<a href="#"><img src="resources/Schematics_icon.jpg?raw=false" width="500px"><br/> Schematics</a>
+<a href="./unit_sch_V_0_0_1_ue0094_ICP-10111.pdf"><img src="resources/Schematics_icon.jpg?raw=false" width="450px"><br/> Schematics</a>
 </div>
 
 ---
@@ -16,6 +16,10 @@
 ## 🔌 Pinout
 
 <div align="center">
+    <a href="#"><img src="hardware/resources/charger_pinout.jpg" width="500px"><br/>Pinout</a>
+    <br/>
+    <br/>
+    
 
 | Pin Label | Function    | Notes                             |
 |-----------|-------------|-----------------------------------|
@@ -24,7 +28,28 @@
 
 </div>
 
+## 📏 Dimensions
 
+<div align="center">
+<a href="./resources/unit_dimension_v_1_0_0_icp10111_barometric_pressure_sensor.png"><img src="./resources/unit_dimension_v_1_0_0_icp10111_barometric_pressure_sensor.png" width="500px"><br/> Dimensions</a>
+</div>
+
+## 📃 Topology
+
+<div align="center">
+<a href="./resources/unit_topology_v_1_0_0_icp10111_barometric_pressure_sensor.png"><img src="./resources/unit_topology_v_1_0_0_icp10111_barometric_pressure_sensor.png" width="450px"><br/> Topology</a>
+<br/>
+<br/>
+
+| Ref. | Description                              |
+|------|------------------------------------------|
+| IC1  | BME688 Environmental Sensor              |
+| L1   | Power On LED                             |
+| U1   | ME6206A18XG 1.8V Regulator               | 
+| JP1  | 2.54 mm Castellated Holes                |
+| J1   | QWIIC Connector (JST 1 mm pitch) for I2C |
+
+</div>
 
 # References
 
