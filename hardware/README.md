@@ -19,6 +19,7 @@
     <a href="#"><img src="resources/unit_pinout_v_0_0_1_ue0094_icp10111_barometric_pressure_sensor_en.jpg" width="500px"><br/>Pinout</a>
     <br/>
     <br/>
+    <br/>
     
 
 | Pin Label | Function    | Notes                             |
