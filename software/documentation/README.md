@@ -87,10 +87,8 @@ The ICP-10111 is a high-precision barometric pressure sensor module based on cap
 
 | Interface | Signals / Pins                               | Typical Use                                       |
 |-----------|----------------------------------------------|---------------------------------------------------|
-| UART      | —                                            | Not supported                                     |
 | I²C       | SDA, SCL, VCC, GND (via Qwiic/STEMMA QT™)    | Main digital interface for pressure & temperature |
-| SPI       | —                                            | Not supported                                     |
-| USB       | —                                            | Not supported                                     |
+
 
 ### Supports
 
