@@ -30,7 +30,7 @@ jobs:
         fetch-depth: 0
 
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v4
       with:
         python-version: '3.11'
         
@@ -59,21 +59,17 @@ jobs:
         # Create docs directory if it doesn't exist
         mkdir -p docs
         
-        # Copy generated files to docs/
-        if [ -f "software/documentation/build/datasheet_professional.html" ]; then
-          cp software/documentation/build/datasheet_professional.html docs/
-          echo "✅ HTML copied"
-        fi
-        
-        if [ -f "software/documentation/build/datasheet_professional.pdf" ]; then
-          cp software/documentation/build/datasheet_professional.pdf docs/
-          echo "✅ PDF copied"
-        fi
-        
-        # Copy images if they exist
-        if [ -d "software/documentation/build/images" ]; then
-          cp -r software/documentation/build/images docs/
-          echo "✅ Images copied"
+        # Copy ALL generated files from build/ to docs/
+        if [ -d "software/documentation/build" ]; then
+          # Copy all files from build directory
+          cp software/documentation/build/* docs/ 2>/dev/null || echo "Some files might not exist"
+          echo "✅ All build files copied"
+          
+          # Copy images directory if it exists
+          if [ -d "software/documentation/build/images" ]; then
+            cp -r software/documentation/build/images docs/
+            echo "✅ Images directory copied"
+          fi
         fi
         
         # Create simple index.html redirect
