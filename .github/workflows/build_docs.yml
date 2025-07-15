@@ -17,8 +17,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   build_and_deploy:
@@ -32,7 +30,7 @@ jobs:
         fetch-depth: 0
 
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v4
       with:
         python-version: '3.11'
         
@@ -95,18 +93,3 @@ jobs:
           git commit -m "Deploy documentation [skip ci]"
           git push origin main
         fi
-
-    - name: Setup Pages
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      uses: actions/configure-pages@v4
-
-    - name: Upload to GitHub Pages
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./docs
-
-    - name: Deploy to GitHub Pages
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      id: deployment
-      uses: actions/deploy-pages@v4
