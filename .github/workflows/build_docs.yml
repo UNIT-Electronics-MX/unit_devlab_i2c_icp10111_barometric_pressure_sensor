@@ -23,35 +23,65 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install dependencies (Python + LaTeX + Ghostscript)
+    - name: Install dependencies (Python + Chrome for PDF generation)
       run: |
         sudo apt-get update
-        sudo apt-get install -y texlive-latex-extra texlive-fonts-recommended texlive-lang-english ghostscript latexmk
-        pip install -r software/documentation/requirements.txt
-        pip install -r software/sphinx/requirements.txt
+        sudo apt-get install -y chromium-browser
+        pip install -r software/documentation/requirements_minimal.txt
 
     #################################################
-    # Generar PDF del Product Brief con nombre del repo
+    # Generar Professional PDF del Product Brief
     #################################################
-    - name: Build LaTeX PDF from README
+    - name: Build Professional PDF from README
       working-directory: software/documentation
       env:
         REPO_NAME: ${{ github.event.repository.name }}
       run: |
-        python test_readme.py
-        python generate_pdf.py
-        gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer \
-           -dNOPAUSE -dQUIET -dBATCH \
-           -sOutputFile=build/${REPO_NAME}_product_brief.pdf build/*.pdf
-
-    #################################################
-    # Generar Documentación Sphinx (HTML + PDF)
-    #################################################
-    - name: Build Sphinx Documentation
-      working-directory: software/sphinx
-      run: |
-        make clean
-        make pdfx
+        # Verificar que los archivos necesarios existen
+        ls -la ../../README.md
+        ls -la ../../hardware/resources/ || echo "Hardware resources directory not found"
+        
+        # Copiar imágenes necesarias al directorio de trabajo antes de generar HTML
+        mkdir -p images
+        if [ -f "images/logo_unit.png" ]; then
+          echo "Logo found in documentation/images/"
+        else
+          echo "Warning: Logo not found"
+        fi
+        
+        # Copiar todas las imágenes de hardware al directorio actual para que el generador las encuentre
+        if [ -d "../../hardware/resources" ]; then
+          # Copiar imágenes directamente al directorio de trabajo
+          find ../../hardware/resources -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" \) -exec cp {} . \; 2>/dev/null || true
+          echo "Hardware images copied to working directory"
+        fi
+        
+        # Generar HTML profesional
+        python generate_professional_pdf.py
+        
+        # Verificar que el HTML se generó correctamente
+        if [ ! -f "build/datasheet_professional.html" ]; then
+          echo "Error: datasheet_professional.html not generated"
+          exit 1
+        fi
+        
+        # Verificar qué imágenes están disponibles en el HTML
+        echo "Images referenced in HTML:"
+        grep -o 'src="[^"]*"' build/datasheet_professional.html | head -10 || true
+        
+        # Crear directorio build si no existe
+        mkdir -p build
+        
+        # Convertir HTML a PDF usando Chrome directamente
+        chromium-browser --headless --disable-gpu --print-to-pdf=build/${REPO_NAME}_product_brief.pdf --print-to-pdf-no-header --no-margins file://$(pwd)/build/datasheet_professional.html
+        
+        # Verificar que el PDF se generó
+        if [ ! -f "build/${REPO_NAME}_product_brief.pdf" ]; then
+          echo "Error: PDF not generated"
+          exit 1
+        fi
+        
+        echo "Professional datasheet generated successfully"
 
     #################################################
     # Preparar contenido para docs/
@@ -63,17 +93,38 @@ jobs:
         rm -rf docs
         mkdir -p docs
 
-        # PDF generado desde LaTeX
+        # PDF profesional generado desde HTML
         cp software/documentation/build/${REPO_NAME}_product_brief.pdf docs/
 
-        # PDF generado por Sphinx
-        cp software/sphinx/pdf/programmer.pdf docs/${REPO_NAME}_sphinx.pdf
+        # HTML profesional para visualización web
+        cp software/documentation/build/datasheet_professional.html docs/
+        
+        # Copiar todas las imágenes del directorio build (ya incluye todo lo necesario)
+        if [ -d "software/documentation/build" ]; then
+          # Copiar todas las imágenes que están en build/ 
+          find software/documentation/build -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.pdf" \) -exec cp {} docs/ \; 2>/dev/null || true
+          echo "Build images copied to docs/"
+        fi
+        
+        # Copiar directorio images completo si existe
+        if [ -d "software/documentation/build/images" ]; then
+          cp -r software/documentation/build/images docs/
+          echo "Build images directory copied to docs/"
+        fi
+        
+        # Crear índice principal que redirija al datasheet
+        echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Product Documentation</title><meta http-equiv=\"refresh\" content=\"0; url=datasheet_professional.html\"></head><body><p>Redirecting to <a href=\"datasheet_professional.html\">professional datasheet</a>...</p></body></html>" > docs/index.html
 
-        # HTML generado por Sphinx
-        cp -r software/sphinx/docs/* docs/
+        # El generador ya copió todas las imágenes necesarias al directorio build
+        # Solo necesitamos verificar que todo esté copiado
+        echo "Images and resources already copied by generator to build directory"
 
         # Permitir archivos especiales en GitHub Pages
         touch docs/.nojekyll
+        
+        # Verificar contenido final de docs/
+        echo "Final docs/ directory contents:"
+        find docs/ -type f | head -20
 
     #################################################
     # Publicar cambios a la rama main
@@ -85,5 +136,5 @@ jobs:
         git config --global user.email "actions@github.com"
         git pull origin main
         git add docs/
-        git commit -m "Deploy full documentation and product brief [skip ci]" || echo "No changes"
+        git commit -m "Deploy professional documentation and product brief [skip ci]" || echo "No changes"
         git push origin main
