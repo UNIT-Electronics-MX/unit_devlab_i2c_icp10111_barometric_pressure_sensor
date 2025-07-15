@@ -127,13 +127,9 @@ The ICP-10111 is a high-precision barometric pressure sensor module based on cap
 
 ## Downloads
 
-<!-- FILL HERE -->
-- [Schematic PDF](docs/schematic.pdf)
-- [Board Dimensions DXF](docs/dimensions.dxf)
-- [Pinout Diagram PNG](docs/pinout.png)
-
+-
 ## Purchase
 
 <!-- FILL HERE -->
-- [Buy from vendor](https://example.com)
+- [Buy from vendor](https://uelectronics.com/)
 - [Product page](https://example.com/product/template-board)

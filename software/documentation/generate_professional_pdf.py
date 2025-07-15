@@ -330,6 +330,14 @@ class ProfessionalDatasheetGenerator:
             border-radius: 0 8px 8px 0;
         }
         
+        /* ADDITIONAL SECTIONS (USAGE, DOWNLOADS) - Force page break */
+        .additional-sections {
+            page-break-before: always !important;
+            page-break-inside: avoid !important;
+            margin: 20px 0;
+            min-height: 100px;
+        }
+        
         .professional-table {
             width: 100%;
             border-collapse: separate;
@@ -617,6 +625,7 @@ class ProfessionalDatasheetGenerator:
                 font-size: 12pt;
                 margin: 5mm 0 3mm 0 !important;
                 padding: 2mm 0;
+                page-break-before: always;
                 page-break-after: avoid;
             }
             
@@ -639,6 +648,13 @@ class ProfessionalDatasheetGenerator:
                 margin: 2mm 0 1mm 0 !important;
                 padding: 1mm 2mm !important;
                 page-break-after: avoid;
+            }
+            
+            /* ADDITIONAL SECTIONS (USAGE, DOWNLOADS) - Nueva página */
+            .additional-sections {
+                page-break-before: always;
+                page-break-inside: avoid;
+                margin: 5mm 0;
             }
             
             .features-grid, .applications-grid {
@@ -672,6 +688,7 @@ class ProfessionalDatasheetGenerator:
             
             /* Compact specifications */
             .key-specs {
+                page-break-before: always;
                 page-break-inside: avoid;
                 margin: 5mm 0;
                 padding: 10px;
@@ -752,9 +769,12 @@ class ProfessionalDatasheetGenerator:
             }
             
             .product-view-image {
-                max-width: 45mm !important;
-                max-height: 45mm !important;
-                height: auto;
+                width: 60mm !important;
+                height: 50mm !important;
+                object-fit: contain !important;
+                object-position: center !important;
+                background: white !important;
+                padding: 2mm !important;
             }
             
             .view-card {
@@ -1070,8 +1090,10 @@ class ProfessionalDatasheetGenerator:
         .product-view-image {
             width: 100%;
             max-width: 350px;
-            height: auto;
+            min-width: 300px;
+            height: 250px;
             object-fit: contain;
+            object-position: center;
             border-radius: 6px;
             background: white;
             padding: 8px;
@@ -1142,14 +1164,6 @@ class ProfessionalDatasheetGenerator:
                 font-size: 8pt;
                 margin: 1mm 0;
                 page-break-after: avoid;
-            }
-            
-            /* COMPACT CAPTIONS */
-            .pinout-caption, .dimensions-caption, .view-caption, .doc-caption, .detail-caption {
-                font-size: 7pt;
-                margin: 1mm 0;
-                page-break-before: avoid;
-                line-height: 1.1;
             }
             
             /* HIDE EMPTY SECTIONS COMPLETELY */
@@ -1388,8 +1402,10 @@ class ProfessionalDatasheetGenerator:
         .product-view-image {
             width: 100%;
             max-width: 300px;
-            height: auto;
+            min-width: 250px;
+            height: 200px;
             object-fit: contain;
+            object-position: center;
             border-radius: 6px;
             background: white;
             padding: 8px;
@@ -1805,7 +1821,7 @@ class ProfessionalDatasheetGenerator:
         if electrical_specs:
             html += '''
                 <div class="key-specs">
-                    <div class="specs-title">KEY TECHNICAL SPECIFICATIONS</div>
+                    <div class="specs-title">KEY TECHNICAL<br>SPECIFICATIONS</div>
                     <div class="specs-grid">
             '''
             
@@ -1943,15 +1959,14 @@ class ProfessionalDatasheetGenerator:
         
         if has_images:
             html += '''
-                    <!-- VISUAL CONTENT IMMEDIATELY FOLLOWS -->
-                    <div class="visual-content">
-                        <div class="section-title-major">VISUAL DOCUMENTATION</div>
+                <div class="visual-content">
+                    <div class="section-title-major">VISUAL DOCUMENTATION</div>
             '''
             
             # MAIN TECHNICAL IMAGES (LARGE FORMAT FOR A4) - WITHOUT PINOUT
             html += '''
-                        <div class="images-section">
-                            <div class="images-title">PRIMARY TECHNICAL DOCUMENTATION</div>
+                    <div class="images-section">
+                        <div class="images-title">PRIMARY TECHNICAL DOCUMENTATION</div>
             '''
             
             # Dimensions - LARGE
