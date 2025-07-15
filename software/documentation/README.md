@@ -48,19 +48,15 @@ The ICP-10111 is a high-precision barometric pressure sensor module based on cap
 
 <!-- FILL HERE -->
 - Weather Stations & Barographs
-  - Track atmospheric pressure trends.
 
 - Altimeters & UAVs
-  - Estimate real-time altitude changes.
 
 - Indoor/Outdoor Navigation
-  - Enhance GPS accuracy with pressure-based elevation.
 
 - Wearables & IoT
-  - Monitor environmental conditions in low-power devices.
 
 - Climatology & Research
-  - High-resolution pressure mapping for science projects.
+
 - Weather Forecasting
 
 ## Features
