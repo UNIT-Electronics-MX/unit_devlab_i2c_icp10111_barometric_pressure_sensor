@@ -1506,13 +1506,26 @@ class ProfessionalDatasheetGenerator:
                 elif any(pattern in file_lower for pattern in ['_btm', '_bottom', 'bottom_view', 'bottomview']):
                     images['unit_bottom'] = file
                 elif any(pattern in file_lower for pattern in ['pinout', 'pin_out', 'pins', 'pinmap']):
-                    # Preferir inglés, luego español
-                    if 'en' in file_lower or not images['unit_pinout']:
+                    # Preferir PNG sobre JPG, luego inglés sobre español
+                    current_pinout = images['unit_pinout']
+                    should_replace = False
+                    
+                    if not current_pinout:
+                        should_replace = True
+                    elif file.lower().endswith('.png') and current_pinout.lower().endswith('.jpg'):
+                        should_replace = True  # Preferir PNG sobre JPG
+                    elif 'en' in file_lower and 'es' in current_pinout.lower():
+                        should_replace = True  # Preferir inglés sobre español
+                    elif file.lower().endswith('.png') and current_pinout.lower().endswith('.png') and 'en' in file_lower:
+                        should_replace = True  # Entre PNGs, preferir inglés
+                    
+                    if should_replace:
                         images['unit_pinout'] = file
                 elif any(pattern in file_lower for pattern in ['dimension', 'dimensions', 'size', 'mechanical']):
                     images['unit_dimensions'] = file
                 elif any(pattern in file_lower for pattern in ['sch', 'schematic', 'circuit']) and '.pdf' not in file_lower:
                     images['unit_schematic'] = file
+        
         
         return images
 
@@ -2296,11 +2309,15 @@ class ProfessionalDatasheetGenerator:
 
 
 if __name__ == "__main__":
+    import subprocess
+    import shutil
+    
     generator = ProfessionalDatasheetGenerator()
     
     # Paths
     readme_path = os.path.join(os.path.dirname(__file__), 'README.md')
     output_path = os.path.join(os.path.dirname(__file__), 'build', 'datasheet_professional.html')
+    pdf_path = os.path.join(os.path.dirname(__file__), 'build', 'datasheet_professional.pdf')
     
     # Ensure output directory exists
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -2308,7 +2325,41 @@ if __name__ == "__main__":
     # Generate datasheet
     try:
         result_path = generator.generate_professional_datasheet(readme_path, output_path)
-        print(f"✅ Professional datasheet generated successfully: {result_path}")
+        print(f"✅ Professional datasheet HTML generated: {result_path}")
+        
+        # Generate PDF using Chrome/Chromium
+        chrome_browsers = [
+            'google-chrome',
+            'google-chrome-stable', 
+            'chromium-browser',
+            'chromium'
+        ]
+        
+        chrome_cmd = None
+        for browser in chrome_browsers:
+            if shutil.which(browser):
+                chrome_cmd = browser
+                break
+        
+        if chrome_cmd:
+            try:
+                subprocess.run([
+                    chrome_cmd,
+                    '--headless',
+                    '--disable-gpu',
+                    '--no-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--print-to-pdf=' + pdf_path,
+                    result_path
+                ], check=True, capture_output=True)
+                print(f"✅ Professional datasheet PDF generated: {pdf_path}")
+            except subprocess.CalledProcessError as e:
+                print(f"⚠️ PDF generation failed: {e}")
+                print("HTML file is still available")
+        else:
+            print("⚠️ No Chrome/Chromium browser found. PDF not generated.")
+            print("HTML file is available")
+            
     except Exception as e:
         print(f"❌ Error generating datasheet: {e}")
         import traceback
