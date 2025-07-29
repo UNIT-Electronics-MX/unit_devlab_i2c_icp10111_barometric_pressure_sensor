@@ -3111,6 +3111,23 @@ class ProfessionalDatasheetGenerator:
                         shutil.copy2(source_path, dest_path)
                         print(f"📋 Copied {image_file} to build/")
         
+        # Copiar específicamente Schematics_icon.jpg si existe
+        schematics_icon_path = os.path.join(hardware_abs_path, 'Schematics_icon.jpg')
+        if os.path.exists(schematics_icon_path):
+            dest_path = os.path.join(build_dir, 'Schematics_icon.jpg')
+            shutil.copy2(schematics_icon_path, dest_path)
+            print(f"📋 Copied Schematics_icon.jpg to build/")
+        
+        # Copiar todas las imágenes PNG/JPG desde hardware/resources para mayor cobertura
+        if os.path.exists(hardware_abs_path):
+            for file in os.listdir(hardware_abs_path):
+                if any(file.lower().endswith(ext) for ext in ['.png', '.jpg', '.jpeg']):
+                    source_path = os.path.join(hardware_abs_path, file)
+                    dest_path = os.path.join(build_dir, file)
+                    if not os.path.exists(dest_path):  # Solo copiar si no existe ya
+                        shutil.copy2(source_path, dest_path)
+                        print(f"📋 Copied additional image {file} to build/")
+        
         # Copiar PDFs de esquemáticos desde hardware/resources
         if os.path.exists(hardware_abs_path):
             for file in os.listdir(hardware_abs_path):
