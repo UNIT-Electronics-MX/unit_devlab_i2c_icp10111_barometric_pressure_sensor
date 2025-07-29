@@ -2555,6 +2555,38 @@ class ProfessionalDatasheetGenerator:
         match = re.search(pattern, content, re.DOTALL | re.IGNORECASE)
         return match.group(1).strip() if match else ""
 
+    def extract_images_from_html(self, content):
+        """Extrae imágenes desde HTML embebido en markdown"""
+        import re
+        images = {}
+        
+        # Buscar patrones de imagen en HTML: <img src="...">
+        html_img_pattern = r'<img\s+[^>]*src=["\']([^"\']+)["\'][^>]*>'
+        matches = re.findall(html_img_pattern, content, re.IGNORECASE)
+        
+        for img_src in matches:
+            # Limpiar parámetros como ?raw=false
+            clean_src = img_src.split('?')[0]
+            filename = os.path.basename(clean_src)
+            filename_lower = filename.lower()
+            
+            # Mapear por patrones en el nombre del archivo
+            if any(pattern in filename_lower for pattern in ['sch', 'schematic', 'circuit']):
+                images['unit_schematic'] = filename
+                print(f"🔍 Found schematic image in HTML: {filename}")
+            elif any(pattern in filename_lower for pattern in ['pinout', 'pin_out', 'pins']):
+                images['unit_pinout'] = filename
+            elif any(pattern in filename_lower for pattern in ['dimension', 'dimensions']):
+                images['unit_dimensions'] = filename
+            elif any(pattern in filename_lower for pattern in ['topology', 'block']):
+                images['unit_topology'] = filename
+            elif any(pattern in filename_lower for pattern in ['_top', 'top_view']):
+                images['unit_top'] = filename
+            elif any(pattern in filename_lower for pattern in ['_btm', '_bottom']):
+                images['unit_bottom'] = filename
+        
+        return images
+
     def find_hardware_images(self):
         """Encuentra imágenes de hardware con patrones genéricos"""
         images = {
@@ -2566,7 +2598,17 @@ class ProfessionalDatasheetGenerator:
             'unit_schematic': None
         }
         
-        # Buscar archivos en hardware/resources con rutas absolutas
+        # PASO 1: Buscar imágenes en HTML del README de hardware
+        hardware_data = self.parse_hardware_readme()
+        if hardware_data:
+            html_images = self.extract_images_from_html(hardware_data['content'])
+            # Combinar con las imágenes encontradas (HTML tiene prioridad)
+            for key, value in html_images.items():
+                if value:
+                    images[key] = value
+                    print(f"🎯 Using image from hardware README HTML: {key} = {value}")
+        
+        # PASO 2: Buscar archivos en hardware/resources con rutas absolutas
         hardware_abs_path = os.path.abspath(self.hardware_path)
         
         if os.path.exists(hardware_abs_path):
@@ -2578,13 +2620,14 @@ class ProfessionalDatasheetGenerator:
                     continue
                 
                 # Mapear archivos por patrones genéricos usando solo el nombre de archivo
-                if any(pattern in file_lower for pattern in ['topology', 'block_diagram', 'system']):
+                # Solo asignar si no se encontró ya en HTML
+                if any(pattern in file_lower for pattern in ['topology', 'block_diagram', 'system']) and not images['unit_topology']:
                     images['unit_topology'] = file
-                elif any(pattern in file_lower for pattern in ['_top', 'top_view', 'topview']) and 'topology' not in file_lower:
+                elif any(pattern in file_lower for pattern in ['_top', 'top_view', 'topview']) and 'topology' not in file_lower and not images['unit_top']:
                     images['unit_top'] = file
-                elif any(pattern in file_lower for pattern in ['_btm', '_bottom', 'bottom_view', 'bottomview']):
+                elif any(pattern in file_lower for pattern in ['_btm', '_bottom', 'bottom_view', 'bottomview']) and not images['unit_bottom']:
                     images['unit_bottom'] = file
-                elif any(pattern in file_lower for pattern in ['pinout', 'pin_out', 'pins', 'pinmap']):
+                elif any(pattern in file_lower for pattern in ['pinout', 'pin_out', 'pins', 'pinmap']) and not images['unit_pinout']:
                     # Preferir PNG sobre JPG, luego inglés sobre español
                     current_pinout = images['unit_pinout']
                     should_replace = False
@@ -2600,9 +2643,9 @@ class ProfessionalDatasheetGenerator:
                     
                     if should_replace:
                         images['unit_pinout'] = file
-                elif any(pattern in file_lower for pattern in ['dimension', 'dimensions', 'size', 'mechanical']):
+                elif any(pattern in file_lower for pattern in ['dimension', 'dimensions', 'size', 'mechanical']) and not images['unit_dimensions']:
                     images['unit_dimensions'] = file
-                elif any(pattern in file_lower for pattern in ['sch', 'schematic', 'circuit']):
+                elif any(pattern in file_lower for pattern in ['sch', 'schematic', 'circuit']) and not images['unit_schematic']:
                     # Detectar esquemáticos tanto en imagen como en PDF
                     images['unit_schematic'] = file
         
@@ -3204,6 +3247,21 @@ class ProfessionalDatasheetGenerator:
         
         # FASE 1: Descubrimiento automático del repositorio
         discovered_data = self.discover_project_information()
+        
+        # FASE 1.5: Integrar README de hardware si existe
+        hardware_data = self.parse_hardware_readme()
+        if hardware_data:
+            print("🔧 Integrating hardware README data...")
+            # Combinar datos de hardware con los datos descubiertos
+            main_data = {
+                'frontmatter': discovered_data['metadata'],
+                'content': discovered_data.get('combined_content', ''),
+                'date': datetime.now(ZoneInfo('UTC'))
+            }
+            combined_data = self.combine_readme_content(main_data, hardware_data)
+            # Actualizar discovered_data con el contenido combinado
+            discovered_data['combined_content'] = combined_data['content']
+            discovered_data['metadata'].update(combined_data['frontmatter'])
         
         # FASE 2: Extraer información usando el nuevo sistema
         metadata = discovered_data['metadata']

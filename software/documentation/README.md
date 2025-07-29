@@ -95,6 +95,13 @@ The ICP-10111 is a high-precision barometric pressure sensor module based on cap
 | SDA    | Bidirectional | I²C data line (7-bit address 0x63 default) |
 | SCL    | Bidirectional | I²C clock line                             |
 
+## Circuit Schematic
+
+![Circuit Schematic](../../hardware/resources/Schematics_icon.jpg)
+
+Complete circuit schematic showing all component connections
+
+[View Complete Schematic PDF](../../hardware/unit_sch_V_0_0_1_ue0094_ICP-10111.pdf)
 
 ## Block Diagram
 
