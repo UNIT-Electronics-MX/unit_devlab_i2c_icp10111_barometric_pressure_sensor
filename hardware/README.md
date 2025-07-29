@@ -1,7 +1,7 @@
 # Hardware
 
 <div align="center">
-<a href="unit_sch_V_0_0_1_ue0094_ICP-10111.pdf"><img src="resources/Schematics_icon.jpg"
+<a href="unit_sch_V_0_0_1_ue0094_ICP-10111.pdf"><img src="./resources/Schematics_icon.jpg" width="200px"><br/>Schematic</a>
 </div>
 
 
@@ -42,7 +42,7 @@
 
 | Ref. | Description                              |
 |------|------------------------------------------|
-| IC1  | BME688 Environmental Sensor              |
+| IC1  | ICP-10111 Barometric Pressure Sensor    |
 | L1   | Power On LED                             |
 | U1   | ME6206A18XG 1.8V Regulator               | 
 | JP1  | 2.54 mm Castellated Holes                |
@@ -52,4 +52,4 @@
 
 # References
 
-- [BME688 Datasheet](https://product.tdk.com/system/files/dam/doc/product/sensor/pressure/capacitive-pressure/data_sheet/ds-000177-icp-10111-v1.3.pdf)
+- [ICP-10111 Datasheet](https://product.tdk.com/system/files/dam/doc/product/sensor/pressure/capacitive-pressure/data_sheet/ds-000177-icp-10111-v1.3.pdf)
