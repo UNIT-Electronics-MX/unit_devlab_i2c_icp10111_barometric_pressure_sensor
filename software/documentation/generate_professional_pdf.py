@@ -3192,8 +3192,25 @@ class ProfessionalDatasheetGenerator:
     def image_to_base64(self, image_path):
         """Convierte una imagen a base64 para incrustación en HTML"""
         try:
+            # Verificar que el archivo existe antes de intentar abrirlo
+            if not os.path.exists(image_path):
+                print(f"⚠️ Image file does not exist: {image_path}")
+                return None
+                
+            # Verificar permisos de lectura
+            if not os.access(image_path, os.R_OK):
+                print(f"⚠️ No read permission for: {image_path}")
+                return None
+                
             with open(image_path, 'rb') as image_file:
-                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                file_data = image_file.read()
+                
+                # Verificar que el archivo no está vacío
+                if len(file_data) == 0:
+                    print(f"⚠️ Image file is empty: {image_path}")
+                    return None
+                    
+                encoded_string = base64.b64encode(file_data).decode('utf-8')
                 
                 # Determinar el tipo MIME basado en la extensión
                 ext = os.path.splitext(image_path)[1].lower()
@@ -3205,9 +3222,14 @@ class ProfessionalDatasheetGenerator:
                     '.bmp': 'image/bmp'
                 }.get(ext, 'image/png')
                 
-                return f"data:{mime_type};base64,{encoded_string}"
+                base64_data = f"data:{mime_type};base64,{encoded_string}"
+                print(f"✅ Successfully converted {os.path.basename(image_path)} to base64 ({len(file_data)} bytes -> {len(base64_data)} chars)")
+                return base64_data
+                
         except Exception as e:
             print(f"⚠️ Error converting {image_path} to base64: {e}")
+            import traceback
+            traceback.print_exc()
             return None
 
     def get_embedded_images(self, images):
@@ -3227,17 +3249,21 @@ class ProfessionalDatasheetGenerator:
         for image_key, image_file in images.items():
             if image_file:
                 source_path = os.path.join(hardware_abs_path, image_file)
+                print(f"🔍 Processing {image_key}: {image_file} from {source_path}")
+                
                 if os.path.exists(source_path):
                     base64_data = self.image_to_base64(source_path)
-                    if base64_data:
+                    if base64_data and base64_data.startswith('data:'):
                         embedded_images[image_key] = base64_data
-                        print(f"📸 Embedded {image_file} as base64")
+                        print(f"📸 ✅ Embedded {image_file} as base64 for {image_key}")
                     else:
                         # Fallback a ruta relativa si falla base64
                         embedded_images[image_key] = image_file
-                        print(f"⚠️ Using relative path for {image_file}")
+                        print(f"⚠️ 🔄 Using relative path for {image_file} (base64 failed)")
                 else:
-                    print(f"⚠️ Image not found: {source_path}")
+                    print(f"⚠️ ❌ Image not found: {source_path}")
+                    # Intentar con ruta relativa como último recurso
+                    embedded_images[image_key] = image_file
         
         return embedded_images
 

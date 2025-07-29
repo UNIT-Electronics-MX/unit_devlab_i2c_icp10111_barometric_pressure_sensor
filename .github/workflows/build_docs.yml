@@ -61,8 +61,11 @@ jobs:
         
         # Copy ALL generated files from build/ to docs/
         if [ -d "software/documentation/build" ]; then
+          echo "📁 Contents of build directory:"
+          ls -la software/documentation/build/
+          
           # Copy all files from build directory
-          cp software/documentation/build/* docs/ 2>/dev/null || echo "Some files might not exist"
+          cp -v software/documentation/build/* docs/ 2>/dev/null || echo "Some files might not exist"
           echo "✅ All build files copied"
           
           # Copy images directory if it exists
@@ -70,6 +73,19 @@ jobs:
             cp -r software/documentation/build/images docs/
             echo "✅ Images directory copied"
           fi
+          
+          # Specifically copy image files (JPG, PNG, etc.)
+          if ls software/documentation/build/*.jpg >/dev/null 2>&1; then
+            cp -v software/documentation/build/*.jpg docs/
+            echo "✅ JPG files copied"
+          fi
+          if ls software/documentation/build/*.png >/dev/null 2>&1; then
+            cp -v software/documentation/build/*.png docs/
+            echo "✅ PNG files copied"
+          fi
+          
+          echo "📁 Contents of docs directory after copying:"
+          ls -la docs/
         fi
         
         # Create simple index.html redirect
