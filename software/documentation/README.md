@@ -26,37 +26,30 @@ The ICP-10111 is a high-precision barometric pressure sensor module based on cap
 - Three programmable power/noise modes (Ultra-Low Noise, Low Noise, Low Power) optimize trade-off between current draw and resolution.  
 - Breakout board includes onboard 1.8 V regulator, level-shifting I/O and four mounting holes for easy integration.
 
-## Key Specifications
-
-| Parameter | Value | Notes |
-|-----------|--------|-------|
-| Pressure Range | 30 kPa to 110 kPa | Absolute pressure measurement |
-| Absolute Accuracy | ±1 hPa | Across full temperature range |
-| Relative Accuracy | ±1 Pa | ≈5 cm altitude resolution |
-| Supply Voltage | 3.3V - 5.5V | On-board regulator |
-| Current Consumption | 1.3 - 10.4 µA | Depends on mode selection |
-| Interface | I²C | 400 kHz max, address 0x63 |
-| Operating Temperature | -40°C to +85°C | Industrial grade |
-| Board Dimensions | 20.32 × 17.78 mm | Compact form factor |
-
 ## Electrical Characteristics & Signal Overview
 
+### Power & Interface
 - Supply Voltage: 3.3 V–5.5 V (module), 1.8 V (sensor core)  
 - Supply Current:  
   - Ultra-Low Noise (10 Hz): 10.4 µA  
   - Low Noise (10 Hz): 5.2 µA  
   - Low Power (10 Hz): 1.3 µA  
-- Pressure Resolution: 24-bit ΔΣ ADC (sub-Pa level)  
-- Temperature Resolution: 0.01 °C (±0.4 °C accuracy)  
 - I²C Interface: up to 400 kHz, 7-bit address 0x63  
 - Logic Levels: VCC-referenced (1.8 V – 5.5 V tolerant)  
-- Measurement Rates: 1 Hz to 100 Hz selectable
-- Operating Temperature: -40°C to +85°C
-- Pressure Range: 30 kPa to 110 kPa
-- Absolute Accuracy: ±1 hPa
+
+### Measurement Performance
+- Pressure Range: 30 kPa to 110 kPa (absolute pressure)
+- Absolute Accuracy: ±1 hPa (across full temperature range)
 - Relative Accuracy: ±1 Pa (≈5 cm altitude resolution)
-- Package: 20.32 mm × 17.78 mm breakout board
-- Mounting: 4 × Ø 2.2 mm holes 
+- Pressure Resolution: 24-bit ΔΣ ADC (sub-Pa level)  
+- Temperature Resolution: 0.01 °C (±0.4 °C accuracy)  
+- Measurement Rates: 1 Hz to 100 Hz selectable
+- Operating Temperature: -40°C to +85°C (industrial grade)
+
+### Mechanical
+- Board Dimensions: 20.32 mm × 17.78 mm (compact form factor)
+- Mounting: 4 × Ø 2.2 mm holes
+- Connector: Qwiic/STEMMA QT + Pin Headers 
 
 
 ## Applications
