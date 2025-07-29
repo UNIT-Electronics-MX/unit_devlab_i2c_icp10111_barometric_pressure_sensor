@@ -556,6 +556,17 @@ class ProfessionalDatasheetGenerator:
             color: #111827;
         }
         
+        .sub-spec {
+            margin-left: 15px;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .sub-spec .spec-label {
+            font-weight: 400;
+            color: #6b7280;
+        }
+        
         /* SECCIÓN DE IMÁGENES TÉCNICAS - ESPACIADO COMPACTO */
         .images-section {
             margin: 15px 0;
@@ -2551,9 +2562,37 @@ class ProfessionalDatasheetGenerator:
 
     def extract_section(self, heading, content):
         """Extrae sección específica"""
-        pattern = rf'##+\s*{re.escape(heading)}\s+(.*?)(?=\n##|\Z)'
-        match = re.search(pattern, content, re.DOTALL | re.IGNORECASE)
-        return match.group(1).strip() if match else ""
+        # Escapar caracteres especiales en el heading
+        escaped_heading = re.escape(heading)
+        
+        # Intentar con diferentes niveles de encabezado
+        patterns = [
+            rf'##\s*{escaped_heading}\s+(.*?)(?=\n##[^#]|\n# |\Z)',  # ## heading
+            rf'###\s*{escaped_heading}\s+(.*?)(?=\n###[^#]|\n##|\n# |\Z)',  # ### heading
+            rf'#{{1,4}}\s*{escaped_heading}\s+(.*?)(?=\n#{{1,4}}[^#]|\Z)'  # general fallback
+        ]
+        
+        for i, pattern in enumerate(patterns):
+            match = re.search(pattern, content, re.DOTALL | re.IGNORECASE)
+            if match:
+                result = match.group(1).strip()
+                return result
+        
+        # Manual fallback search
+        lines = content.split('\n')
+        for i, line in enumerate(lines):
+            if heading.upper() in line.upper():
+                # Extract content until next heading
+                result_lines = []
+                for j in range(i+1, len(lines)):
+                    if lines[j].strip().startswith('#') and j > i:  # Only consider lines that start with # as new headings
+                        break
+                    result_lines.append(lines[j])
+                result = '\n'.join(result_lines).strip()
+                if len(result) > 100:  # Only return if we got substantial content
+                    return result
+        
+        return ""
 
     def extract_images_from_html(self, content):
         """Extrae imágenes desde HTML embebido en markdown"""
@@ -2856,6 +2895,38 @@ class ProfessionalDatasheetGenerator:
                     'icon': '🏭'
                 }
             ]
+        
+        # AGREGAR APLICACIONES A LAS CARACTERÍSTICAS
+        # Buscar sección de aplicaciones/use cases
+        app_section = discovered_data['explorer'].get_best_section([
+            'Use Cases', 'Applications', 'Typical Applications', 'Examples'
+        ])
+        
+        if app_section:
+            content = app_section['content']
+            lines = content.split('\n')
+            app_list = []
+            
+            for line in lines:
+                line = line.strip()
+                if line.startswith('- ') or line.startswith('* '):
+                    app = line[2:].strip()
+                    if app and len(app) > 5:
+                        app_list.append(app)
+            
+            # Si encontramos aplicaciones, agregarlas como una característica
+            if app_list:
+                # Tomar las primeras 4-5 aplicaciones más importantes
+                key_apps = app_list[:5]
+                app_desc = ", ".join(key_apps)
+                if len(app_desc) > 80:  # Si es muy largo, usar solo las primeras 3
+                    app_desc = ", ".join(key_apps[:3]) + " and more"
+                
+                features.append({
+                    'title': 'Key Applications',
+                    'desc': app_desc,
+                    'icon': '🎯'
+                })
         
         return features
 
@@ -3403,6 +3474,18 @@ class ProfessionalDatasheetGenerator:
         # Obtener contenido combinado para funciones legacy
         content = discovered_data.get('combined_content', '')
         
+        # Para especificaciones técnicas, usar específicamente el README de documentación
+        doc_readme_path = os.path.join(self.repo_root, 'software', 'documentation', 'README.md')
+        doc_content = ''
+        if os.path.exists(doc_readme_path):
+            try:
+                with open(doc_readme_path, 'r', encoding='utf-8') as f:
+                    doc_content = f.read()
+                print(f"📖 Loaded documentation README: {len(doc_content)} chars")
+            except Exception as e:
+                print(f"⚠️ Error reading documentation README: {e}")
+                doc_content = content  # Fallback to combined content
+        
         # Crear HTML completo
         
         html = f"""
@@ -3492,53 +3575,136 @@ class ProfessionalDatasheetGenerator:
                 </div>
             '''
         
-        # KEY SPECIFICATIONS
-        if electrical_specs_dict:
+        # KEY SPECIFICATIONS - Extract from organized template tables
+        key_specs_section = self.extract_section('KEY TECHNICAL SPECIFICATIONS', doc_content)
+        
+        if key_specs_section:
             html += '''
                 <div class="key-specs">
                     <div class="specs-title">KEY TECHNICAL<br>SPECIFICATIONS</div>
                     <div class="specs-grid">
             '''
             
-            # Group specifications
-            power_specs = {}
+            # Extract each specification category from the template
+            spec_categories = [
+                ('CONNECTIVITY', '🔌', 'connectivity'),
+                ('POWER & INTERFACE', '⚡', 'power'),
+                ('MEASUREMENT PERFORMANCE', '📊', 'measurement'),
+                ('ENVIRONMENTAL', '🌡️', 'environmental'),
+                ('MECHANICAL', '🔧', 'mechanical')
+            ]
             
-            for key, value in electrical_specs_dict.items():
-                if any(word in key.lower() for word in ['power', 'supply', 'consumption', 'current', 'voltage']):
-                    power_specs[key] = value
+            for category_name, icon, css_class in spec_categories:
+                # Extract the specific category table
+                category_pattern = rf'###\s*{re.escape(icon)}\s*{re.escape(category_name)}.*?\n(.*?)(?=###|\n##|\Z)'
+                category_match = re.search(category_pattern, key_specs_section, re.DOTALL | re.IGNORECASE)
+                
+                if category_match:
+                    category_content = category_match.group(1).strip()
+                    
+                    # Extract table from category content - find all consecutive table lines
+                    lines = category_content.split('\n')
+                    table_lines = []
+                    in_table = False
+                    
+                    for line in lines:
+                        line = line.strip()
+                        if '|' in line and line.startswith('|'):
+                            table_lines.append(line)
+                            in_table = True
+                        elif in_table and not line:
+                            # Empty line might be part of table formatting
+                            continue
+                        elif in_table:
+                            # Non-table line after table started, end table
+                            break
+                    
+                    if len(table_lines) >= 3:  # Header + separator + at least one data row
+                        html += f'''
+                        <div class="spec-group {css_class}">
+                            <h4>{icon} {category_name}</h4>
+                        '''
+                        
+                        # Parse table rows (skip headers and separator, process data rows)
+                        for line in table_lines[2:]:
+                            if line.strip():
+                                cells = [cell.strip() for cell in line.strip('|').split('|')]
+                                if len(cells) >= 2:
+                                    param_name = cells[0].strip('*').strip()
+                                    param_value = cells[1].strip()
+                                    
+                                    # Skip empty rows and header-like content
+                                    if param_name and param_value and not param_name.startswith('→'):
+                                        html += f'''
+                            <div class="spec-item">
+                                <span class="spec-label">{param_name}:</span>
+                                <span class="spec-value">{param_value}</span>
+                            </div>
+                                        '''
+                                    elif param_name.startswith('→'):
+                                        # Handle sub-items (indented specifications)
+                                        clean_name = param_name.replace('→', '').strip()
+                                        html += f'''
+                            <div class="spec-item sub-spec">
+                                <span class="spec-label">• {clean_name}:</span>
+                                <span class="spec-value">{param_value}</span>
+                            </div>
+                                        '''
+                        
+                        html += '</div>'
             
-            if power_specs:
-                html += '''
-                        <div class="spec-group">
-                            <h4>POWER SUPPLY</h4>
-                '''
-                for key, value in power_specs.items():
-                    html += f'''
-                            <div class="spec-item">
-                                <span class="spec-label">{key}:</span>
-                                <span class="spec-value">{value}</span>
-                            </div>
-                    '''
-                html += '</div>'
-            
-            # Add connectivity specifications
-            interfaces = connectivity_specs_dict.get('interfaces', connectivity_specs_dict.get('Interfaces', 'I²C, SPI'))
-            connector = connectivity_specs_dict.get('connector', connectivity_specs_dict.get('Connector', 'Qwiic + Pin Headers'))
-            html += f'''
-                        <div class="spec-group">
-                            <h4>CONNECTIVITY</h4>
-                            <div class="spec-item">
-                                <span class="spec-label">Interfaces:</span>
-                                <span class="spec-value">{interfaces}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Connector:</span>
-                                <span class="spec-value">{connector}</span>
-                            </div>
-                        </div>
+            html += '''
                     </div>
                 </div>
             '''
+        else:
+            # Fallback to old method if new template not found
+            if electrical_specs_dict:
+                html += '''
+                    <div class="key-specs">
+                        <div class="specs-title">KEY TECHNICAL<br>SPECIFICATIONS</div>
+                        <div class="specs-grid">
+                '''
+                
+                # Group specifications
+                power_specs = {}
+                
+                for key, value in electrical_specs_dict.items():
+                    if any(word in key.lower() for word in ['power', 'supply', 'consumption', 'current', 'voltage']):
+                        power_specs[key] = value
+                
+                if power_specs:
+                    html += '''
+                            <div class="spec-group">
+                                <h4>POWER SUPPLY</h4>
+                    '''
+                    for key, value in power_specs.items():
+                        html += f'''
+                                <div class="spec-item">
+                                    <span class="spec-label">{key}:</span>
+                                    <span class="spec-value">{value}</span>
+                                </div>
+                        '''
+                    html += '</div>'
+                
+                # Add connectivity specifications
+                interfaces = connectivity_specs_dict.get('interfaces', connectivity_specs_dict.get('Interfaces', 'I²C, SPI'))
+                connector = connectivity_specs_dict.get('connector', connectivity_specs_dict.get('Connector', 'Qwiic + Pin Headers'))
+                html += f'''
+                            <div class="spec-group">
+                                <h4>CONNECTIVITY</h4>
+                                <div class="spec-item">
+                                    <span class="spec-label">Interfaces:</span>
+                                    <span class="spec-value">{interfaces}</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Connector:</span>
+                                    <span class="spec-value">{connector}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                '''
         
         # CONTENT FLOWS CONTINUOUSLY - NO SEPARATE SECTIONS
         html += '''
@@ -3652,35 +3818,47 @@ class ProfessionalDatasheetGenerator:
                         </div>
                 '''
         
-        # SECCIÓN 1: ESPECIFICACIONES TÉCNICAS Y CARACTERÍSTICAS
+        # SECCIÓN 1: ESPECIFICACIONES TÉCNICAS Y CARACTERÍSTICAS - FILTRADA PARA EVITAR DUPLICACIÓN
+        # Procesar solo las tablas que NO están en la sección KEY TECHNICAL SPECIFICATIONS
         if spec_tables:
-            html += '''
-                    <div class="tables-section">
-                        <h2 class="section-title">TECHNICAL SPECIFICATIONS</h2>
-            '''
+            # Filtrar tablas que ya están procesadas en KEY TECHNICAL SPECIFICATIONS
+            filtered_spec_tables = []
+            key_spec_sections = ['connectivity', 'power', 'measurement', 'environmental', 'mechanical']
+            
             for table_info in spec_tables:
-                section_title = table_info.get('source_section', 'Specifications').title()
-                table_data = table_info.get('data', [])
-                if table_data:
-                    headers = list(table_data[0].keys()) if table_data else []
-                    # OMITIR TABLA DE RECURSOS (Resource/Link) EN ESTA SECCIÓN
-                    if any('resource' in h.lower() for h in headers) and any('link' in h.lower() for h in headers):
-                        continue
-                    markdown_table = f"| {' | '.join(headers)} |\n"
-                    markdown_table += f"| {' | '.join(['---'] * len(headers))} |\n"
-                    for row in table_data:
-                        values = [str(row.get(header, '')) for header in headers]
-                        markdown_table += f"| {' | '.join(values)} |\n"
-                    table_html = self.markdown_table_to_html_professional(markdown_table, 'technical')
-                    html += f'''
-                        <div class="table-container">
-                            <h3 class="table-title">{section_title}</h3>
-                            {table_html}
+                section_title = table_info.get('source_section', '').lower()
+                # Skip tables that are already processed in KEY TECHNICAL SPECIFICATIONS
+                if not any(key_section in section_title for key_section in key_spec_sections):
+                    filtered_spec_tables.append(table_info)
+            
+            if filtered_spec_tables:
+                html += '''
+                        <div class="tables-section">
+                            <h2 class="section-title">ADDITIONAL TECHNICAL INFORMATION</h2>
+                '''
+                for table_info in filtered_spec_tables:
+                    section_title = table_info.get('source_section', 'Specifications').title()
+                    table_data = table_info.get('data', [])
+                    if table_data:
+                        headers = list(table_data[0].keys()) if table_data else []
+                        # OMITIR TABLA DE RECURSOS (Resource/Link) EN ESTA SECCIÓN
+                        if any('resource' in h.lower() for h in headers) and any('link' in h.lower() for h in headers):
+                            continue
+                        markdown_table = f"| {' | '.join(headers)} |\n"
+                        markdown_table += f"| {' | '.join(['---'] * len(headers))} |\n"
+                        for row in table_data:
+                            values = [str(row.get(header, '')) for header in headers]
+                            markdown_table += f"| {' | '.join(values)} |\n"
+                        table_html = self.markdown_table_to_html_professional(markdown_table, 'technical')
+                        html += f'''
+                            <div class="table-container">
+                                <h3 class="table-title">{section_title}</h3>
+                                {table_html}
+                            </div>
+                        '''
+                html += '''
                         </div>
-                    '''
-            html += '''
-                    </div>
-            '''
+                '''
 
         # SECCIÓN 2: TYPICAL APPLICATIONS (AHORA DONDE ESTABA ADDITIONAL RESOURCES)
         if app_tables:
@@ -4197,6 +4375,82 @@ class ProfessionalDatasheetGenerator:
         component_keywords = ['ref.', 'ref', 'reference', 'component']
         
         return any(keyword in ' '.join(headers).lower() for keyword in component_keywords)
+
+    def convert_markdown_to_html_basic(self, content):
+        """Convierte markdown básico a HTML"""
+        import re
+        
+        if not content:
+            return ""
+        
+        # Process line by line
+        lines = content.split('\n')
+        html_lines = []
+        in_list = False
+        
+        for line in lines:
+            line = line.strip()
+            
+            if not line:
+                if in_list:
+                    html_lines.append('</ul>')
+                    in_list = False
+                html_lines.append('<br>')
+                continue
+            
+            # Headers
+            if line.startswith('### '):
+                if in_list:
+                    html_lines.append('</ul>')
+                    in_list = False
+                html_lines.append(f'<h3>{line[4:]}</h3>')
+            elif line.startswith('## '):
+                if in_list:
+                    html_lines.append('</ul>')
+                    in_list = False
+                html_lines.append(f'<h2>{line[3:]}</h2>')
+            elif line.startswith('# '):
+                if in_list:
+                    html_lines.append('</ul>')
+                    in_list = False
+                html_lines.append(f'<h1>{line[2:]}</h1>')
+            # Lists
+            elif line.startswith('- '):
+                if not in_list:
+                    html_lines.append('<ul>')
+                    in_list = True
+                html_lines.append(f'<li>{line[2:]}</li>')
+            # Tables - convert to simple format
+            elif '|' in line and not line.startswith('|---'):
+                if in_list:
+                    html_lines.append('</ul>')
+                    in_list = False
+                # Simple table processing
+                cells = [cell.strip() for cell in line.split('|') if cell.strip()]
+                if cells:
+                    html_lines.append('<table border="1"><tr>')
+                    for cell in cells:
+                        html_lines.append(f'<td>{cell}</td>')
+                    html_lines.append('</tr></table>')
+            # Regular paragraphs
+            else:
+                if in_list:
+                    html_lines.append('</ul>')
+                    in_list = False
+                # Handle bold text
+                line = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', line)
+                # Handle italic text
+                line = re.sub(r'\*(.*?)\*', r'<em>\1</em>', line)
+                # Handle code
+                line = re.sub(r'`(.*?)`', r'<code>\1</code>', line)
+                # Handle links
+                line = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', line)
+                html_lines.append(f'<p>{line}</p>')
+        
+        if in_list:
+            html_lines.append('</ul>')
+        
+        return '\n'.join(html_lines)
 
     def clean_markdown_content(self, content):
         """Limpia contenido markdown removiendo enlaces, imágenes y manteniendo texto"""
