@@ -16,10 +16,6 @@ Fill in each section without deleting or modifying the existing headings.
 
 ![product](../../hardware/resources/unit_top_v_1_0_0_icp10111_barometric_pressure_sensor.png)
 
-## Introduction
-
-<!-- FILL HERE -->
-The ICP-10111 Barometric Pressure Sensor Module is a compact and efficient sensor designed for high-accuracy atmospheric pressure measurements with low power consumption. Based on MEMS capacitive technology, this module offers ultra-low noise performance, exceptional relative accuracy, and stable sensor throughput. Ideal for weather monitoring, altitude measurement, and environmental sensing, it delivers industry-leading precision in demanding applications.
 
 ## Functional Description
 
@@ -99,13 +95,6 @@ The ICP-10111 is a high-precision barometric pressure sensor module based on cap
 | SDA    | Bidirectional | I²C data line (7-bit address 0x63 default) |
 | SCL    | Bidirectional | I²C clock line                             |
 
-## Circuit Schematic
-
-![Circuit Schematic](../../hardware/resources/Schematics_icon.jpg)
-
-Complete circuit schematic showing all component connections
-
-[View Complete Schematic PDF](../../hardware/unit_sch_V_0_0_1_ue0094_ICP-10111.pdf)
 
 ## Block Diagram
 
@@ -114,6 +103,7 @@ Complete circuit schematic showing all component connections
 ## Dimensions
 
 ![Dimensions](../../hardware/resources/unit_dimension_v_1_0_0_icp10111_barometric_pressure_sensor.png)
+
 ## Usage
 
 - Arduino IDE  
@@ -126,12 +116,3 @@ Complete circuit schematic showing all component connections
 - CircuitPython / MicroPython  
   - Install adafruit_icp10111 from the Adafruit bundle  
   - Use busio.I2C or I2C() to communicate over SDA/SCL  
-
-## Downloads
-
--
-## Purchase
-
-<!-- FILL HERE -->
-- [Buy from vendor](https://uelectronics.com/)
-- [Product page](https://example.com/product/template-board)
