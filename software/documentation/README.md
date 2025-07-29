@@ -28,28 +28,70 @@ The ICP-10111 is a high-precision barometric pressure sensor module based on cap
 
 ## Electrical Characteristics & Signal Overview
 
-### Power & Interface
-- Supply Voltage: 3.3 V–5.5 V (module), 1.8 V (sensor core)  
-- Supply Current:  
-  - Ultra-Low Noise (10 Hz): 10.4 µA  
-  - Low Noise (10 Hz): 5.2 µA  
-  - Low Power (10 Hz): 1.3 µA  
-- I²C Interface: up to 400 kHz, 7-bit address 0x63  
-- Logic Levels: VCC-referenced (1.8 V – 5.5 V tolerant)  
+<!-- 
+========================================
+EDITABLE SPECIFICATIONS TEMPLATE
+========================================
+Edita los valores a continuación según necesites.
+El formato se mantendrá automáticamente en el PDF generado.
+-->
 
-### Measurement Performance
-- Pressure Range: 30 kPa to 110 kPa (absolute pressure)
-- Absolute Accuracy: ±1 hPa (across full temperature range)
-- Relative Accuracy: ±1 Pa (≈5 cm altitude resolution)
-- Pressure Resolution: 24-bit ΔΣ ADC (sub-Pa level)  
-- Temperature Resolution: 0.01 °C (±0.4 °C accuracy)  
-- Measurement Rates: 1 Hz to 100 Hz selectable
-- Operating Temperature: -40°C to +85°C (industrial grade)
+### 🔌 CONNECTIVITY (Conectividad)
+<!-- Edita las interfaces y conectores disponibles -->
+| Interface | Details |
+|-----------|---------|
+| **Primary Interface** | I²C (up to 400 kHz, address 0x63) |
+| **Connector Type** | Qwiic + Pin Headers |
+| **Logic Levels** | VCC-referenced (1.8V – 5.5V tolerant) |
 
-### Mechanical
-- Board Dimensions: 20.32 mm × 17.78 mm (compact form factor)
-- Mounting: 4 × Ø 2.2 mm holes
-- Connector: Qwiic/STEMMA QT + Pin Headers 
+### ⚡ POWER & INTERFACE (Alimentación e Interfaz)
+<!-- Edita las especificaciones de voltaje y consumo -->
+| Parameter | Specification |
+|-----------|---------------|
+| **Supply Voltage** | 3.3V – 5.5V (module), 1.8V (sensor core) |
+| **Current Consumption** | |
+| → Ultra-Low Noise (10 Hz) | 10.4 µA |
+| → Low Noise (10 Hz) | 5.2 µA |
+| → Low Power (10 Hz) | 1.3 µA |
+
+### 📊 MEASUREMENT PERFORMANCE (Rendimiento de Medición)
+<!-- Edita las especificaciones de precisión y rango -->
+| Feature | Specification |
+|---------|---------------|
+| **Pressure Operating Range** | 30 to 110 kPa |
+| **Pressure Sensor Absolute Accuracy** | ±1 hPa over 950 hPa–1050 hPa, 0°C to 65°C |
+| **Pressure Sensor Relative Accuracy** | ±1 Pa for any 10 hPa change over 950 hPa–1050 hPa at 25°C |
+| **Pressure Sensor Temperature Coefficient Offset** | ±0.5 Pa/°C over 25°C to 45°C at 100 kPa |
+| **Temperature Sensor Absolute Accuracy** | ±0.4°C |
+| **Noise and Current Consumption** | ULN mode: 0.4 Pa @ 10.4 µA, LN mode: 0.8 Pa @ 5.2 µA, LP mode: 3.2 Pa @ 1.3 µA |
+
+### 🌡️ ENVIRONMENTAL (Condiciones Ambientales)
+<!-- Edita las condiciones de operación -->
+| Parameter | Range |
+|-----------|-------|
+| **Operating Temperature** | -40°C to +85°C (industrial grade) |
+| **Storage Temperature** | -40°C to +85°C |
+| **Humidity** | 0% to 100% RH (non-condensing) |
+
+### 🔧 MECHANICAL (Especificaciones Mecánicas)
+<!-- Edita las dimensiones y características físicas -->
+| Feature | Specification |
+|---------|---------------|
+| **Board Dimensions** | 20.32 mm × 17.78 mm |
+| **Mounting Holes** | 4 × Ø 2.2 mm |
+| **Weight** | ~2.5 g |
+| **Package Type** | Compact breakout board |
+
+<!-- 
+========================================
+NOTAS PARA EDICIÓN:
+========================================
+1. Para cambiar valores: simplemente edita el texto después del símbolo "|"
+2. Para agregar nuevas filas: copia el formato "| **Parámetro** | Valor |"
+3. Para cambiar categorías: edita los títulos con ### 
+4. Los íconos (🔌⚡📊🌡️🔧) son opcionales pero ayudan a la organización visual
+========================================
+--> 
 
 
 ## Applications
