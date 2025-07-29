@@ -2587,7 +2587,7 @@ class ProfessionalDatasheetGenerator:
         
         return images
 
-    def find_hardware_images(self):
+    def find_hardware_images(self, hardware_data=None):
         """Encuentra imágenes de hardware con patrones genéricos"""
         images = {
             'unit_top': None,
@@ -2598,8 +2598,7 @@ class ProfessionalDatasheetGenerator:
             'unit_schematic': None
         }
         
-        # PASO 1: Buscar imágenes en HTML del README de hardware
-        hardware_data = self.parse_hardware_readme()
+        # PASO 1: Buscar imágenes en HTML del README de hardware si se proporciona
         if hardware_data:
             html_images = self.extract_images_from_html(hardware_data['content'])
             # Combinar con las imágenes encontradas (HTML tiene prioridad)
@@ -3314,7 +3313,7 @@ class ProfessionalDatasheetGenerator:
                 product_code = words[0][:6]
         
         # FASE 3: Extraer información técnica usando descubrimiento
-        images = self.find_hardware_images()
+        images = self.find_hardware_images(hardware_data)
         electrical_specs, connectivity_specs = self.extract_electrical_specs_from_discovery(discovered_data)
         features = self.extract_features_from_discovery(discovered_data)
         introduction_paragraphs = self.extract_introduction_from_discovery(discovered_data)
@@ -3793,7 +3792,7 @@ class ProfessionalDatasheetGenerator:
                 html += f'''
                                 <div style="text-align: center; margin-top: 20px;">
                                     <div style="margin-bottom: 20px;">
-                                        <img src="{images['unit_schematic']}" alt="Circuit Schematic" class="schematic-image">
+                                        <img src="{embedded_images.get('unit_schematic', images.get('unit_schematic', ''))}" alt="Circuit Schematic" class="schematic-image">
                                         <div class="doc-caption" style="margin-top: 10px; font-size: 10pt; color: #6b7280;">
                                             Complete circuit schematic showing all component connections
                                         </div>
