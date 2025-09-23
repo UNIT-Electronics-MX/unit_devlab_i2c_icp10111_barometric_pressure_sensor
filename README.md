@@ -45,6 +45,14 @@ The UNIT **ICP-10111 Barometric Pressure Sensor Module** is a compact and effici
 4. **Power** via USB or external battery (if supported)
 
 
+## 🧪 Use Cases
+
+- Weather stations
+- Altitude measurement for drones and UAVs
+- Environmental monitoring systems
+- Indoor navigation and smart building systems
+
+
 ## 📚 Resources
 
 - [Schematic Diagram](hardware/schematic.pdf)
