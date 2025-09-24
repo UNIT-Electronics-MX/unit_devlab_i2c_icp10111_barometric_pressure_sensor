@@ -2444,9 +2444,56 @@ class ProfessionalDatasheetGenerator:
             hardware_readme_path = os.path.abspath(os.path.join(self.base_path, relative_path))
             if os.path.exists(hardware_readme_path):
                 print(f"📖 Found hardware README: {hardware_readme_path}")
-                return self.parse_readme(hardware_readme_path)
+                
+                # Procesar placeholders antes de parsear
+                hardware_content = self.process_hardware_readme_placeholders(hardware_readme_path)
+                
+                # Crear archivo temporal con contenido procesado
+                import tempfile
+                with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as temp_file:
+                    temp_file.write(hardware_content)
+                    temp_path = temp_file.name
+                
+                try:
+                    result = self.parse_readme(temp_path)
+                finally:
+                    # Limpiar archivo temporal
+                    os.unlink(temp_path)
+                
+                return result
         
         print("⚠️ Hardware README not found in any expected location")
+        return None
+
+    def process_hardware_readme_placeholders(self, hardware_readme_path):
+        """Procesa placeholders en el hardware README"""
+        with open(hardware_readme_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Detectar archivo de esquemático automáticamente
+        schematic_pdf = self.find_schematic_pdf(hardware_readme_path)
+        
+        # Reemplazar placeholders
+        if schematic_pdf:
+            content = content.replace('{{SCHEMATIC_PDF}}', f'./{schematic_pdf}')
+            print(f"🔄 Replaced {{SCHEMATIC_PDF}} with ./{schematic_pdf}")
+        else:
+            content = content.replace('{{SCHEMATIC_PDF}}', '#')
+            print("⚠️ No schematic PDF found, using placeholder link")
+        
+        return content
+
+    def find_schematic_pdf(self, hardware_readme_path):
+        """Encuentra el archivo PDF de esquemático en el directorio hardware"""
+        hardware_dir = os.path.dirname(hardware_readme_path)
+        
+        try:
+            for file in os.listdir(hardware_dir):
+                if file.lower().startswith('unit_sch') and file.lower().endswith('.pdf'):
+                    return file
+        except OSError:
+            pass
+        
         return None
 
     def combine_readme_content(self, main_data, hardware_data):

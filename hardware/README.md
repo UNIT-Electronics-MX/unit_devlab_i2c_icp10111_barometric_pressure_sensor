@@ -1,7 +1,7 @@
 # Hardware
 
 <div align="center">
-<a href="./unit_sch_V_0_0_1_ue0094_ICP-10111.pdf"><img src="resources/Schematics_icon.jpg?raw=false" width="200px"><br/>Schematic</a>
+<a href="{{SCHEMATIC_PDF}}"><img src="resources/Schematics_icon.jpg?raw=false" width="200px"><br/>schematic</a>
 </div>
 
 
