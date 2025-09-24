@@ -424,10 +424,37 @@ def process_license() -> str:
 No license file found in the repository.
 """
 
+def find_schematic_pdf() -> Optional[str]:
+    """Find schematic PDF file automatically using unit_sch_*.pdf pattern."""
+    project_root = Path.cwd()
+    hardware_dir = project_root / "hardware"
+    
+    # Search in hardware directory
+    if hardware_dir.exists():
+        for pdf_file in hardware_dir.glob("unit_sch_*.pdf"):
+            return f"resources/{pdf_file.name}"
+    
+    # Also search in hardware/resources
+    hardware_resources = hardware_dir / "resources"
+    if hardware_resources.exists():
+        for pdf_file in hardware_resources.glob("unit_sch_*.pdf"):
+            return f"resources/{pdf_file.name}"
+    
+    return None
+
 def create_resources_page() -> str:
     """Create resources page with links to datasheet and documentation."""
     
-    resources_content = """# Datasheet & Documentation
+    # Find schematic automatically
+    schematic_link = find_schematic_pdf()
+    schematic_entry = ""
+    
+    if schematic_link:
+        schematic_entry = f"- 🔌 [Schematic Diagram]({schematic_link}) - Complete circuit schematic"
+    else:
+        schematic_entry = "- 🔌 Schematic Diagram - Not found (add unit_sch_*.pdf to hardware/ directory)"
+    
+    resources_content = f"""# Datasheet & Documentation
 
 ## 📄 Professional Datasheet
 
@@ -440,7 +467,7 @@ Complete technical specifications and professional documentation.
 ## 🔗 Additional Resources
 
 ### Hardware Resources
-- 🔌 [Schematic Diagram](resources/unit_sch_v_0_0_1_ue0081_Jun-R3.pdf) - Complete circuit schematic
+{schematic_entry}
 - 📐 [Board Dimensions](hardware/dimensions.md) - Physical specifications
 - 🔧 [Pinout Reference](hardware/pinout.md) - Pin configuration details
 
@@ -457,17 +484,21 @@ Complete technical specifications and professional documentation.
     if github_url:
         resources_content += f"- 🔗 <a href=\"{github_url}\" target=\"_blank\">Source Code Repository</a> - Complete project files\n"
     
-    resources_content += """
+    # Create schematic link for the table
+    schematic_table_link = schematic_link if schematic_link else "#"
+    schematic_table_text = "PDF" if schematic_link else "Not Found"
+    
+    resources_content += f"""
 ## 📋 Quick Reference
 
 | Resource Type | Description | Link |
 |---------------|-------------|------|
 | 📄 **Datasheet (HTML)** | Interactive technical specs | <a href="../datasheet_professional.html" target="_blank">View</a> |
 | 📄 **Datasheet (PDF)** | Downloadable technical specs | <a href="../datasheet_professional.pdf" target="_blank">PDF</a> |
-| 🔌 **Schematic** | Circuit diagram | <a href="resources/unit_sch_v_0_0_1_ue0081_Jun-R3.pdf" target="_blank">PDF</a> |
-| � **Dimensions** | Board measurements | [View](hardware/dimensions.md) |
+| 🔌 **Schematic** | Circuit diagram | <a href="{schematic_table_link}" target="_blank">{schematic_table_text}</a> |
+| 📐 **Dimensions** | Board measurements | [View](hardware/dimensions.md) |
 | 🔧 **Pinout** | Pin configuration | [View](hardware/pinout.md) |
-| �💻 **Examples** | Code samples | [View](software/examples.md) |
+| 💻 **Examples** | Code samples | [View](software/examples.md) |
 | 🔧 **Setup Guide** | Getting started | [View](software/getting-started.md) |
 
 ---
