@@ -325,8 +325,10 @@ The following examples demonstrate various features of this development board.
     
     # Process C/Arduino examples
     c_example_dir = Path.cwd() / "software" / "examples" / "c"
+    mp_example_dir = Path.cwd() / "software" / "examples" / "mp"
     github_url = get_github_repo_url()
     
+    # Process C/Arduino examples
     if c_example_dir.exists():
         
         # Look for .ino files in subdirectories
@@ -360,6 +362,54 @@ The following examples demonstrate various features of this development board.
                     except Exception as e:
                         continue
     
+    # Process Python/MicroPython examples
+    examples_content += "\n## Python/MicroPython Examples\n\n"
+    examples_content += "MicroPython examples for embedded development.\n\n"
+    
+    if mp_example_dir.exists():
+        # Look for .py files directly in mp directory or subdirectories
+        py_files_found = False
+        
+        for code_file in mp_example_dir.rglob("*.py"):
+            py_files_found = True
+            try:
+                code_content = code_file.read_text(encoding='utf-8', errors='ignore')
+                
+                # Extract first 20 lines as preview
+                lines = code_content.split('\n')
+                preview_lines = lines[:20]
+                preview = '\n'.join(preview_lines)
+                
+                # Get relative path from mp directory
+                relative_to_mp = code_file.relative_to(mp_example_dir)
+                
+                # Generate GitHub link if repository URL is available
+                code_link = ""
+                if github_url:
+                    # Create GitHub blob URL for the file
+                    relative_path = f"software/examples/mp/{relative_to_mp}"
+                    code_link = f"[📄 Ver código completo en GitHub]({github_url}/blob/main/{relative_path})"
+                else:
+                    code_link = f"[📄 Código completo: {code_file.name}](#{code_file.stem.lower()})"
+                
+                # Use file name or parent directory for title
+                title = code_file.stem if code_file.parent == mp_example_dir else f"{code_file.parent.name}/{code_file.name}"
+                
+                examples_content += f"""### 🐍 {title}
+```python
+{preview}
+```
+{code_link}
+
+"""
+            except Exception as e:
+                continue
+        
+        if not py_files_found:
+            examples_content += "No Python examples found in mp/ directory.\n\n"
+    else:
+        examples_content += "No mp/ directory found. Create software/examples/mp/ and add .py files.\n\n"
+    
     # Add default message if no examples found
     if examples_content == "# Examples\n\n## Arduino/C++ Examples\n\nThe following examples demonstrate various features of the UNIT JUN R3 Development Board.\n\n":
         examples_content += """No code examples found. Please add example files to software/examples/ directory.
@@ -368,13 +418,15 @@ The following examples demonstrate various features of this development board.
 ```
 software/examples/
 ├── c/
-│   ├── example1/
-│   │   └── example1.ino
-│   └── example2/
-│       └── example2.ino
-└── python/
-    ├── example1.py
-    └── example2.py
+│   ├── project_name/
+│   │   └── project_name.ino
+│   └── another_example/
+│       └── another_example.ino
+└── mp/
+    ├── oled.py
+    ├── sensor_read.py
+    └── subfolder/
+        └── advanced_example.py
 ```
 """
     
@@ -391,14 +443,20 @@ If no examples are shown above, please add your Arduino sketch files (.ino) to:
 The examples will be automatically detected and displayed here.
 """
 
-    pages["examples/micropython.md"] = """# Python Examples
+    pages["examples/micropython.md"] = """# MicroPython Examples
 
-This section would contain Python examples if any are found in the software/examples/python/ directory.
+This section contains MicroPython examples extracted from the software/examples/mp/ directory.
 
-To add Python examples, create files in:
-- software/examples/python/example_name.py
+If no examples are shown above, please add your Python files (.py) to:
+- software/examples/mp/example_name.py
+- software/examples/mp/subfolder/example_name.py
 
-Python examples will be automatically detected and displayed here.
+Both direct files and subdirectories are supported. Python examples will be automatically detected and displayed here.
+
+## Supported File Types:
+- `.py` files (MicroPython/Python scripts)
+- Any structure within the `mp/` directory
+- Files can be organized in subdirectories for better organization
 """
     
     return pages
