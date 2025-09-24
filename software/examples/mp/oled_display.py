@@ -1,4 +1,6 @@
 """
+Warning: This file is not tested, use at your own risk.
+
 ICP-10111 OLED Display Example - MicroPython
 ============================================
 
