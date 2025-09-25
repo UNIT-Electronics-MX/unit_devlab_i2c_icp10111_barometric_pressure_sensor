@@ -55,9 +55,9 @@ The UNIT **ICP-10111 Barometric Pressure Sensor Module** is a compact and effici
 
 ## 📚 Resources
 
-- [Schematic Diagram](hardware/schematic.pdf)
-- [Board Dimensions (DXF)](docs/dimensions.dxf)
-- [Pinout Diagram](docs/pinout.png)
+- [<a href="./hardware/unit_sch_V_0_0_1_ue0094_ICP-10111.pdf">Schematic Diagram</a>](hardware/schematic.pdf)
+- [<a href="./hardware/resources/unit_dimension_v_1_0_0_icp10111_barometric_pressure_sensor.png">Board Dimensions (DXF)</a>](docs/dimensions.dxf)
+- [<a href="./hardware/resources/unit_pinout_v_0_0_1_ue0094_icp10111_barometric_pressure_sensor_en.png">Pinout Diagram</a>](docs/pinout.png)
 - [Firmware Examples](firmware/)
 - [Getting Started Guide](docs/getting_started.md)
 
