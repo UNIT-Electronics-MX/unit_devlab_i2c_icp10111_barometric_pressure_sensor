@@ -1,6 +1,6 @@
 
         <!DOCTYPE html>
-        <html lang="en" data-product="BAROME">
+        <html lang="en" data-product="IC1">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -227,6 +227,39 @@
         .spec-value {
             font-weight: bold;
             color: #111827;
+        }
+        
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+        
+        .spec-table td {
+            padding: 6px 12px;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 11pt;
+            vertical-align: top;
+        }
+        
+        .spec-table .spec-label {
+            color: #374151;
+            font-weight: 500;
+            width: 40%;
+        }
+        
+        .spec-table .spec-value {
+            font-weight: bold;
+            color: #111827;
+            width: 60%;
+        }
+        
+        .spec-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .spec-table tr:nth-child(even) {
+            background-color: #f9fafb;
         }
         
         .sub-spec {
@@ -1199,7 +1232,7 @@
         /* RESPONSIVE IMAGE STYLES FOR WEB AND PRINT */
         .pinout-image-large {
             width: 100%;
-            max-width: 900px;
+            max-width: 1200px;
             height: auto;
             object-fit: contain;
             border: 2px solid #e2e8f0;
@@ -1212,7 +1245,7 @@
         
         .dimensions-image-large {
             width: 100%;
-            max-width: 800px;
+            max-width: 1100px;
             height: auto;
             object-fit: contain;
             border: 2px solid #e2e8f0;
@@ -1239,7 +1272,7 @@
         
         .topology-image {
             width: 100%;
-            max-width: 650px;
+            max-width: 900px;
             height: auto;
             object-fit: contain;
             border-radius: 6px;
@@ -1280,7 +1313,7 @@
         
         .topology-image-large {
             width: 100%;
-            max-width: 800px;
+            max-width: 1100px;
             height: auto;
             object-fit: contain;
             border-radius: 8px;
@@ -1311,7 +1344,7 @@
         
         .schematic-image {
             width: 100%;
-            max-width: 300px;
+            max-width: 600px;
             height: auto;
             object-fit: contain;
             border-radius: 8px;
@@ -1708,9 +1741,9 @@
         
         .product-view-image {
             width: 100%;
-            max-width: 300px;
+            max-width: 500px;
             min-width: 250px;
-            height: 200px;
+            height: 400px;
             object-fit: contain;
             object-position: center;
             border-radius: 6px;
@@ -2078,6 +2111,68 @@
                 background: white !important;
             }
         }
+        
+        /* HARDWARE SPECIFICATIONS STYLES */
+        .hardware-specifications-page {
+            page-break-before: always;
+            padding: 20mm 15mm;
+            background: white;
+        }
+        
+        .section-page-title {
+            font-size: 28pt;
+            font-weight: 900;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 8mm;
+            letter-spacing: 1px;
+        }
+        
+        .section-page-subtitle {
+            font-size: 12pt;
+            color: #7f8c8d;
+            text-align: center;
+            margin-bottom: 15mm;
+            font-style: italic;
+        }
+        
+        .hardware-section {
+            margin-bottom: 8mm;
+            border-left: 3px solid #3498db;
+            padding-left: 4mm;
+        }
+        
+        .hardware-section-title {
+            font-size: 14pt;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 3mm;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .hardware-section-content {
+            font-size: 10pt;
+            line-height: 1.5;
+            color: #34495e;
+        }
+        
+        .spec-item {
+            margin-bottom: 2mm;
+            padding: 1mm 0;
+        }
+        
+        .spec-item strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        @media print {
+            .hardware-specifications-page {
+                page-break-before: always;
+                padding: 15mm 10mm;
+            }
+        }
         </style>
         </head>
         <body>
@@ -2094,13 +2189,13 @@
 
                         </div>
                         <div class="product-title-section">
-                            <div class="product-code">BAROME</div>
+                            <div class="product-code">IC1</div>
                             <h1 class="product-title">ICP-10111 Barometric Pressure Sensor Module</h1>
                             <p class="product-subtitle">Professional electronic component</p>
                         </div>
                         <div class="version-section">
                             <div class="version-badge">v1.0</div>
-                            <div>2025-09-24</div>
+                            <div>2025-09-25</div>
                             <div>Rev. A</div>
                         </div>
                     </div>
@@ -2186,18 +2281,26 @@
                         <table class="professional-table pinout-table">
 <thead>
 <tr>
+<th>Voltage Level</th>
 <th>Function</th>
-<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="pin-name">Power Supply</td>
-<td class="pin-function">3.3V or 5V</td>
+<td class="pin-name">3.3 V – 5.5 V</td>
+<td class="pin-function">Provides power to the on-board regulator and sensor core.</td>
 </tr>
 <tr>
-<td class="pin-name">Ground</td>
-<td class="pin-function">Common ground for all components</td>
+<td class="pin-name">0 V</td>
+<td class="pin-function">Common reference for power and signals.</td>
+</tr>
+<tr>
+<td class="pin-name">1.8 V to VCC</td>
+<td class="pin-function">Serial data line for I²C communications.</td>
+</tr>
+<tr>
+<td class="pin-name">1.8 V to VCC</td>
+<td class="pin-function">Serial clock line for I²C communications.</td>
 </tr>
 </tbody>
 </table>
@@ -2208,8 +2311,8 @@
                         <div class="features-grid">
             
                         <div class="feature-card">
-                            <div class="feature-title">🔋 Ultra-Low Power</div>
-                            <div class="feature-desc">Optimized for battery-operated applications</div>
+                            <div class="feature-title">❓ feature not specified</div>
+                            <div class="feature-desc">No specific features found</div>
                         </div>
                         
                         <div class="feature-card">
@@ -2220,6 +2323,37 @@
                         </div>
                     </div>
             
+                        <div class="applications-section">
+                            <h2 class="section-title">TYPICAL APPLICATIONS</h2>
+                            <div class="applications-grid">
+                
+                            <div class="app-card">
+                                <div>Weather Stations & Barographs</div>
+                            </div>
+                            
+                            <div class="app-card">
+                                <div>Altimeters & UAVs</div>
+                            </div>
+                            
+                            <div class="app-card">
+                                <div>Indoor/Outdoor Navigation</div>
+                            </div>
+                            
+                            <div class="app-card">
+                                <div>Wearables & IoT</div>
+                            </div>
+                            
+                            <div class="app-card">
+                                <div>Climatology & Research</div>
+                            </div>
+                            
+                            <div class="app-card">
+                                <div>Weather Forecasting</div>
+                            </div>
+                            
+                            </div>
+                        </div>
+                
                         <div class="tables-section">
                             <h2 class="section-title">ADDITIONAL TECHNICAL INFORMATION</h2>
                 
@@ -2336,6 +2470,35 @@
 <td>QWIIC Connector (JST 1 mm pitch) for I2C</td>
 </tr>
 </tbody>
+</table><table class="professional-table">
+<thead>
+<tr>
+<th>Ref.</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IC1</td>
+<td>ICP-10111 Barometric Pressure Sensor</td>
+</tr>
+<tr>
+<td>L1</td>
+<td>Power On LED</td>
+</tr>
+<tr>
+<td>U1</td>
+<td>ME6206A18XG 1.8V Regulator</td>
+</tr>
+<tr>
+<td>JP1</td>
+<td>2.54 mm Castellated Holes</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>QWIIC Connector (JST 1 mm pitch) for I2C</td>
+</tr>
+</tbody>
 </table>
                                 </div>
                     
@@ -2413,6 +2576,48 @@
 <td>Serial clock line for I²C communications.</td>
 </tr>
 </tbody>
+</table><table class="professional-table">
+<thead>
+<tr>
+<th>Function</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Power Supply</td>
+<td>3.3V or 5V</td>
+</tr>
+<tr>
+<td>Ground</td>
+<td>Common ground for all components</td>
+</tr>
+</tbody>
+</table><table class="professional-table">
+<thead>
+<tr>
+<th>Voltage Level</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.3 V – 5.5 V</td>
+<td>Provides power to the on-board regulator and sensor core.</td>
+</tr>
+<tr>
+<td>0 V</td>
+<td>Common reference for power and signals.</td>
+</tr>
+<tr>
+<td>1.8 V to VCC</td>
+<td>Serial data line for I²C communications.</td>
+</tr>
+<tr>
+<td>1.8 V to VCC</td>
+<td>Serial clock line for I²C communications.</td>
+</tr>
+</tbody>
 </table>
                     </div>
                 </div>
@@ -2438,11 +2643,11 @@
                             <div>Technical document automatically generated</div>
                         </div>
                         <div class="footer-center">
-                            <div>BAROME v1.0</div>
+                            <div>IC1 v1.0</div>
                             <div>Professional Technical Datasheet</div>
                         </div>
                         <div class="footer-right">
-                            <div>Date: 2025-09-24</div>
+                            <div>Date: 2025-09-25</div>
                             <div>For commercial distribution</div>
                         </div>
                     </div>
@@ -2450,7 +2655,7 @@
             </div>
             
             <script>
-                document.title = 'Key Applications_Professional_Datasheet_v1.0_2025-09-24';
+                document.title = 'Key Applications_Professional_Datasheet_v1.0_2025-09-25';
                 
                 // Enhanced print function
                 function printDatasheet() {
