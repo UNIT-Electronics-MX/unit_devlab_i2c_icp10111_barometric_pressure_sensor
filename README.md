@@ -8,7 +8,7 @@ The UNIT **ICP-10111 Barometric Pressure Sensor Module** is a compact and effici
 
 
 <div align="center">
-  <img src="hardware/resources/img/unit_top_v_1_0_0_icp10111_barometric_pressure_sensor.png" width="450px" alt="Development Board">
+  <img src="hardware/resources/unit_top_v_1_0_0_icp10111_barometric_pressure_sensor.png" width="450px" alt="Development Board">
   <p><em></em></p>
 </div>
 

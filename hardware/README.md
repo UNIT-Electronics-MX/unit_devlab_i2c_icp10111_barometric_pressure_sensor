@@ -1,7 +1,7 @@
 # Hardware
 
 <div align="center">
-<a href="{{SCHEMATIC_PDF}}"><img src="resources/img/Schematics_icon.jpg?raw=false" width="200px"><br/>schematic</a>
+<a href="{{SCHEMATIC_PDF}}"><img src="resources/Schematics_icon.jpg?raw=false" width="200px"><br/>schematic</a>
 </div>
 
 
@@ -10,7 +10,7 @@
 ## 🔌 Pinout
 
 <div align="center">
-    <a href="./unit_pinout_v_0_0_1_ue0094_icp10111_barometric_pressure_sensor_en.pdf"><img src="resources/pinout/unit_pinout_v_0_0_1_ue0094_icp10111_barometric_pressure_sensor_en.jpg" width="500px"><br/>Pinout</a>
+    <a href="./unit_pinout_v_0_0_1_ue0094_icp10111_barometric_pressure_sensor_en.pdf"><img src="resources/unit_pinout_v_0_0_1_ue0094_icp10111_barometric_pressure_sensor_en.jpg" width="500px"><br/>Pinout</a>
     <br/>
     <br/>
     <br/>
