@@ -4,7 +4,8 @@
 
 # Navigation Links
 SHOP_URL="https://uelectronics.com/"
-REPO_URL="https://github.com/UNIT-Electronics-MX/unit_jun_r3_development_board"
+# Use GitHub Actions context variable if available, fallback to hardcoded URL
+REPO_URL="${GITHUB_SERVER_URL:-https://github.com}/${GITHUB_REPOSITORY:-UNIT-Electronics-MX/unit_devlab_i2c_bme688_environmental_4_in_1_sensor}"
 
 # Icons (using Unicode emojis)
 SHOP_ICON="🛒"

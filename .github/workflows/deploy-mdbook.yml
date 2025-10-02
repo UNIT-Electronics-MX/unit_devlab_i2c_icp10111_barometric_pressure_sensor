@@ -51,8 +51,13 @@ jobs:
         mdbook-version: '0.4.52'
 
     - name: Build documentation with configurable navbar
+      env:
+        GITHUB_SERVER_URL: ${{ github.server_url }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
       run: |
         echo "Building documentation using modular scripts..."
+        echo "Repository URL will be: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+        
         # Load configuration and build with navbar injection
         source .github/scripts/config.sh
         python3 .github/scripts/build_docs.py
