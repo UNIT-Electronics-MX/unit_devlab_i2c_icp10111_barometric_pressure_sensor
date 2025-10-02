@@ -1,9 +1,9 @@
 
-# ICP-10111 Barometric Pressure Sensor Module
+# DevLab: I2C ICP-10111 Barometric Pressure Sensor
 
 ## Introduction
 
-The UNIT **ICP-10111 Barometric Pressure Sensor Module** is a compact and efficient sensor designed for high-accuracy atmospheric pressure measurements with low power consumption. Based on MEMS capacitive technology, this module offers ultra-low noise performance, exceptional relative accuracy, and stable sensor throughput. Ideal for weather monitoring, altitude measurement, and environmental sensing, it delivers industry-leading precision in demanding applications.
+The UNIT **DevLab ICP-10111 Barometric Pressure Sensor** is a compact and efficient sensor designed for high-accuracy atmospheric pressure measurements with low power consumption. Based on MEMS capacitive technology, this module offers ultra-low noise performance, exceptional relative accuracy, and stable sensor throughput. Ideal for weather monitoring, altitude measurement, and environmental sensing, it delivers industry-leading precision in demanding applications.
 
 
 
@@ -33,6 +33,7 @@ The UNIT **ICP-10111 Barometric Pressure Sensor Module** is a compact and effici
 | Feature                                  | Specification                                                     |
 |------------------------------------------|-------------------------------------------------------------------|
 | Pressure operating range                 | 30 to 110 kPa                                                     |
+| JST 1.0mm 4-Pin Port  | QWIIC-compatible I2C connector for easy sensor and module expansion |
 | Noise and current consumption            | ULN mode: 0.4 Pa @ 10.4 µA<br>LN mode: 0.8 Pa @ 5.2 µA<br>LP mode: 3.2 Pa @ 1.3 µA |
 | Pressure Sensor Relative Accuracy        | ±1 Pa for any 10 hPa change over 950 hPa–1050 hPa at 25°C           |
 | Pressure Sensor Absolute Accuracy        | ±1 hPa over 950 hPa–1050 hPa, 0°C to 65°C                           |
@@ -47,19 +48,7 @@ The UNIT **ICP-10111 Barometric Pressure Sensor Module** is a compact and effici
 
 
 
-
-## 🚀 Getting Started
-
-1. **Connect** the board via USB-C to your computer.
-2. **Install** the appropriate board package for:
-   - Arduino IDE
-   - PlatformIO
-   - ESP-IDF / Pico SDK
-3. **Flash** a sample project or use one from `/software/examples`
-4. **Power** via USB or external battery (if supported)
-
-
-## 🧪 Use Cases
+## Applications
 
 - Weather stations
 - Altitude measurement for drones and UAVs
@@ -67,15 +56,9 @@ The UNIT **ICP-10111 Barometric Pressure Sensor Module** is a compact and effici
 - Indoor navigation and smart building systems
 
 
-## 📚 Resources
+## Resources
 
-- [<a href="./hardware/unit_sch_V_0_0_1_ue0094_ICP-10111.pdf">Schematic Diagram</a>](hardware/schematic.pdf)
-- [<a href="./hardware/resources/unit_dimension_v_1_0_0_icp10111_barometric_pressure_sensor.png">Board Dimensions (DXF)</a>](docs/dimensions.dxf)
-- [<a href="./hardware/unit_pinout_v_0_0_1_ue0094_icp10111_barometric_pressure_sensor_en.pdf">Pinout Diagram</a>](docs/pinout.png)
-- [Firmware Examples](firmware/)
-- [Getting Started Guide](docs/getting_started.md)
-
-
+-
 
 ## 📝 License
 
