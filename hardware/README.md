@@ -1,7 +1,8 @@
 # Hardware
 
 <div align="center">
-<a href="{{SCHEMATIC_PDF}}"><img src="resources/Schematics_icon.jpg?raw=false" width="200px"><br/>schematic</a>
+[<img src="resources/Schematics_icon.jpg" width="200px">](hardware/unit_sch_V_0_0_1_ue0094_ICP-10111.pdf)  
+**Schematic**
 </div>
 
 
