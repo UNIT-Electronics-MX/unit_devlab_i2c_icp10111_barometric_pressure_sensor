@@ -19,10 +19,10 @@ The UNIT **DevLab ICP-10111 Barometric Pressure Sensor** is a compact and effici
 ### Quick Setup
 
 
-[<img src="https://img.shields.io/badge/Product%20Wiki-blue?style=for-the-badge" alt="Product Wiki">](https://unit-electronics-mx.github.io/unit_icp10111_barometric_pressure_sensor/mdbook/index.html)
-[<img src="https://img.shields.io/badge/Datasheet-green?style=for-the-badge" alt="Datasheet">](https://unit-electronics-mx.github.io/unit_icp10111_barometric_pressure_sensor/datasheet_professional.html)
+[<img src="https://img.shields.io/badge/Product%20Wiki-blue?style=for-the-badge" alt="Product Wiki">](https://wiki.uelectronics.com/wiki/devlab-i2c-icp-10111-barometric-pressure-sensor)
+[<img src="https://img.shields.io/badge/Datasheet-green?style=for-the-badge" alt="Datasheet">](https://unit-electronics-mx.github.io/unit_devlab_i2c_icp10111_barometric_pressure_sensor/hardware/unit_datasheet_v_0_0_1_ue0094_icp10111_barometric_pressure_sensor_en.pdf)
 [<img src="https://img.shields.io/badge/Buy%20Now-orange?style=for-the-badge" alt="Buy Now">](https://uelectronics.com/)
-[<img src="https://img.shields.io/badge/Getting%20Started-purple?style=for-the-badge" alt="Getting Started">](https://unit-electronics-mx.github.io/unit_icp10111_barometric_pressure_sensor/mdbook/software/getting-started.html)
+[<img src="https://img.shields.io/badge/Getting%20Started-purple?style=for-the-badge" alt="Getting Started">](#)
 
 </div>
 
