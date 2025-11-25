@@ -30,6 +30,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install Jinja2
         
+    - name: Clean previous documentation
+      run: |
+        chmod +x .github/scripts/clean_docs.sh
+        .github/scripts/clean_docs.sh
+        
     - name: Copy hardware files and generate HTML
       run: |
         chmod +x .github/scripts/build_docs.sh

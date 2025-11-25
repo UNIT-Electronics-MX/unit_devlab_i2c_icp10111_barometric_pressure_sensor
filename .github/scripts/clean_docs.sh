@@ -14,24 +14,40 @@ cd "$PROJECT_DIR"
 
 echo " Directorio del proyecto: $PROJECT_DIR"
 
-# Eliminar archivos y directorios generados
-if [ -f "docs/index.html" ]; then
-    rm "docs/index.html"
-    echo "  Eliminado: docs/index.html"
+# Verificar que el directorio docs existe
+if [ ! -d "docs" ]; then
+    echo "  Directorio docs no existe, no hay nada que limpiar"
+    exit 0
 fi
 
-if [ -d "docs/hardware" ]; then
-    rm -rf "docs/hardware"
-    echo "  Eliminado: docs/hardware/"
-fi
+# Eliminar todo el contenido del directorio docs excepto archivos específicos
+echo " Eliminando contenido del directorio docs..."
 
-# Verificar si el directorio docs está vacío (excepto por archivos git y readme)
+# Contar archivos antes de limpiar
+files_before=$(find docs -type f | wc -l)
+dirs_before=$(find docs -type d | wc -l)
+
+# Eliminar todos los archivos y subdirectorios generados
+# Mantener solo: .gitkeep, README.md (si existen)
+find docs -mindepth 1 -maxdepth 1 ! -name ".gitkeep" ! -name "README.md" -exec rm -rf {} +
+
+# Contar archivos después de limpiar
+files_after=$(find docs -type f | wc -l)
+dirs_after=$(find docs -type d | wc -l)
+
+# Mostrar estadísticas
+files_deleted=$((files_before - files_after))
+dirs_deleted=$((dirs_before - dirs_after))
+
+echo "  Eliminados: $files_deleted archivo(s) y $dirs_deleted directorio(s)"
+
+# Verificar el estado final
 if [ -d "docs" ]; then
-    remaining_files=$(find docs -type f ! -name ".gitkeep" ! -name "README.md" ! -name "*.pdf" | wc -l)
+    remaining_files=$(find docs -mindepth 1 -type f ! -name ".gitkeep" ! -name "README.md" | wc -l)
     if [ "$remaining_files" -eq 0 ]; then
         echo " Directorio docs limpiado completamente"
     else
-        echo "ℹ  Directorio docs contiene $remaining_files archivo(s) adicionales"
+        echo "ℹ  Quedan $remaining_files archivo(s) protegidos en docs"
     fi
 fi
 
