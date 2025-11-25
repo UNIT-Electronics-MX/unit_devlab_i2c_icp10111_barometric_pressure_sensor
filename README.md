@@ -1,7 +1,6 @@
 
 # DevLab: I2C ICP-10111 Barometric Pressure Sensor
 
-## Introduction
 
 The UNIT **DevLab ICP-10111 Barometric Pressure Sensor** is a compact and efficient sensor designed for high-accuracy atmospheric pressure measurements with low power consumption. Based on MEMS capacitive technology, this module offers ultra-low noise performance, exceptional relative accuracy, and stable sensor throughput. Ideal for weather monitoring, altitude measurement, and environmental sensing, it delivers industry-leading precision in demanding applications.
 
@@ -11,8 +10,6 @@ The UNIT **DevLab ICP-10111 Barometric Pressure Sensor** is a compact and effici
   <img src="hardware/resources/unit_top_v_1_0_0_icp10111_barometric_pressure_sensor.png" width="450px" alt="Development Board">
   <p><em></em></p>
 </div>
-
-
 
 <div align="center">
 
@@ -26,7 +23,7 @@ The UNIT **DevLab ICP-10111 Barometric Pressure Sensor** is a compact and effici
 
 </div>
 
-## 📦 Overview
+##  Overview
 
 <div align="center">
 
@@ -56,21 +53,21 @@ The UNIT **DevLab ICP-10111 Barometric Pressure Sensor** is a compact and effici
 - Indoor navigation and smart building systems
 
 
-## Resources
 
--
-
-## 📝 License
+##  License
 
 All hardware and documentation in this project are licensed under the **MIT License**.  
 Please refer to [`LICENSE.md`](LICENSE.md) for full terms.
 
 
 
-<div align="center">
-  <sub>Template created by UNIT Electronics </sub>
-</div>
-
 ## Additional link
 
 - [Images and Documents](https://unit-electronics-mx.github.io/unit_devlab_i2c_icp10111_barometric_pressure_sensor/)
+
+
+
+
+<div align="center">
+  <sub>Template created by UNIT Electronics </sub>
+</div>
