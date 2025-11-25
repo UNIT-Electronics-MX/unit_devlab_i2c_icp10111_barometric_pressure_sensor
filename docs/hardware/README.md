@@ -5,9 +5,22 @@
 </div>
 
 
+## Recommended Operating Conditions
+
+| Symbol   | Description                                      | Min   | Typ | Max  | Unit |
+|----------|--------------------------------------------------|-------|-----|------|------|
+| V<sub>CC</sub>     | Input supply voltage (external input via VCC pin) | 3.6   | 5.0 | 6.0  | V    |
+| V<sub>IL</sub>     | Low-level input voltage (I²C interface)           | –0.3  | –   | 0.99 | V    |
+| V<sub>IH</sub>     | High-level input voltage (I²C interface)          | 2.31  | –   | 5.2  | V    |
+| V<sub>OL</sub>     | Low-level output voltage (IOL = 3 mA)             | –     | –   | 0.4  | V    |
+| V<sub>OH</sub>     | High-level output voltage (IOH = –3 mA)           | 2.4   | –   | 3.3  | V    |
+| I<sub>CC</sub>     | Typical operating current (ICP-10111 active mode) | –     | 2.6 | –    | µA   |
+| I<sub>SLEEP</sub>  | Low Power (LP, ICP-10111 active mode)             | –     | 1.3 | –    | µA   |
+| R<sub>PULL</sub>   | I²C pull-up resistor to VCC                       | 4.7   | –   | 10   | kΩ   |
+| T<sub>OP</sub>     | Operating temperature range                       | –40   | –   | +85  | °C   |
 
 
-## 🔌 Pinout
+##  Pinout
 
 <div align="center">
     <a href="./unit_pinout_v_0_0_1_ue0094_icp10111_barometric_pressure_sensor_en.pdf"><img src="resources/unit_pinout_v_0_0_1_ue0094_icp10111_barometric_pressure_sensor_en.jpg" width="500px"><br/>Pinout</a>
@@ -23,13 +36,13 @@
 
 </div>
 
-## 📏 Dimensions
+## Dimensions
 
 <div align="center">
 <a href="./resources/unit_dimension_v_1_0_0_icp10111_barometric_pressure_sensor.png"><img src="./resources/unit_dimension_v_1_0_0_icp10111_barometric_pressure_sensor.png" width="500px"><br/> Dimensions</a>
 </div>
 
-## 📃 Topology
+## Topology
 
 <div align="center">
 <a href="./resources/unit_topology_v_1_0_0_icp10111_barometric_pressure_sensor.png"><img src="./resources/unit_topology_v_1_0_0_icp10111_barometric_pressure_sensor.png" width="450px"><br/> Topology</a>
